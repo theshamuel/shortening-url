@@ -12,6 +12,8 @@
 package com.theshamuel.shrturl.controllers;
 
 import com.theshamuel.shrturl.statistics.dao.StatRecordRepository;
+import com.theshamuel.shrturl.statistics.dto.StatRecordDto;
+import com.theshamuel.shrturl.statistics.service.StatRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,7 +35,7 @@ import java.util.List;
  * @author Alex Gladkikh
  */
 @RestController
-@RequestMapping(value = "/api/v1", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/api/v1/statistics", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class StatRecordController {
 
     /**
@@ -42,13 +44,20 @@ public class StatRecordController {
     StatRecordRepository statRecordRepository;
 
     /**
+     * The Stat record service.
+     */
+    StatRecordService statRecordService;
+
+    /**
      * Instantiates a new Stat record controller.
      *
      * @param statRecordRepository the stat record repository
+     * @param statRecordService    the stat record service
      */
     @Autowired
-    public StatRecordController(StatRecordRepository statRecordRepository) {
+    public StatRecordController(StatRecordRepository statRecordRepository, StatRecordService statRecordService) {
         this.statRecordRepository = statRecordRepository;
+        this.statRecordService = statRecordService;
     }
 
     /**
@@ -60,12 +69,12 @@ public class StatRecordController {
      * @return the statistics by short url by period
      * @throws ServletException the servlet exceptions
      */
-    @GetMapping(value = "/statistics/{shortUrl}/{startDate}/{endDate}")
-    public ResponseEntity<List> getStatisticsByShortUrlByPeriod(
+    @GetMapping(value = "/{shortUrl}/{startDate}/{endDate}")
+    public ResponseEntity<StatRecordDto> getStatisticsByShortUrlByPeriod(
             @PathVariable String shortUrl,
             @PathVariable String startDate,
             @PathVariable String endDate) throws ServletException {
-        List res = statRecordRepository.getStatisticsByShortUrlByPeriod(shortUrl, Date.from(LocalDateTime.parse(startDate).atZone(ZoneId.systemDefault()).toInstant()),Date.from(LocalDateTime.parse(endDate).atZone(ZoneId.systemDefault()).toInstant()));
+        StatRecordDto res = statRecordRepository.getStatisticsByShortUrlByPeriod(shortUrl, Date.from(LocalDateTime.parse(startDate).atZone(ZoneId.systemDefault()).toInstant()),Date.from(LocalDateTime.parse(endDate).atZone(ZoneId.systemDefault()).toInstant()));
 
         return new ResponseEntity<>(res,HttpStatus.OK);
     }
@@ -78,11 +87,33 @@ public class StatRecordController {
      * @return the all statistics by period
      * @throws ServletException the servlet exceptions
      */
-    @GetMapping(value = "/statistics/{startDate}/{endDate}")
+    @GetMapping(value = "/{startDate}/{endDate}")
     public ResponseEntity<List> getAllStatisticsByPeriod(
             @PathVariable String startDate,
             @PathVariable String endDate) throws ServletException {
+
         List res = statRecordRepository.getAllStatisticsByPeriod(Date.from(LocalDateTime.parse(startDate).atZone(ZoneId.systemDefault()).toInstant()),Date.from(LocalDateTime.parse(endDate).atZone(ZoneId.systemDefault()).toInstant()));
+
+        return new ResponseEntity<>(res,HttpStatus.OK);
+    }
+
+
+    /**
+     * Gets statistics by user by period.
+     *
+     * @param userLogin the login of user
+     * @param startDate the start date
+     * @param endDate   the end date
+     * @return the statistics by user by period
+     * @throws ServletException the servlet exception
+     */
+    @GetMapping(value = "/user/{userLogin}/{startDate}/{endDate}")
+    public ResponseEntity<List> getStatisticsByUserByPeriod(
+            @PathVariable String userLogin,
+            @PathVariable String startDate,
+            @PathVariable String endDate) throws ServletException {
+
+        List res = statRecordService.getStatsByUserByPeriod(userLogin, Date.from(LocalDateTime.parse(startDate).atZone(ZoneId.systemDefault()).toInstant()),Date.from(LocalDateTime.parse(endDate).atZone(ZoneId.systemDefault()).toInstant()));
 
         return new ResponseEntity<>(res,HttpStatus.OK);
     }

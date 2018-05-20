@@ -52,6 +52,16 @@ public final class ShortLinkBuilder {
     }
 
     /**
+     * User login short link builder.
+     *
+     * @param userLogin the user login
+     * @return the short link builder
+     */
+    public ShortLinkBuilder userLogin(String userLogin) {
+        shortLink.setUserLogin(userLogin);
+        return this;
+    }
+    /**
      * Short url short link builder.
      *
      * @param shortUrl the short url

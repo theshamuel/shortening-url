@@ -25,13 +25,13 @@ import java.util.Date;
  */
 public final class ShortLinkDtoBuilder {
 
-    private final ShortLinkDto linkDto;
+    private final ShortLinkDto shortLinkDto;
 
     /**
      * Instantiates a new Short link dto builder.
      */
     public ShortLinkDtoBuilder() {
-        this.linkDto = new ShortLinkDto();
+        this.shortLinkDto = new ShortLinkDto();
     }
 
     /**
@@ -41,7 +41,7 @@ public final class ShortLinkDtoBuilder {
      * @return the dto builder
      */
     public ShortLinkDtoBuilder id(String id) {
-        linkDto.setId(id);
+        shortLinkDto.setId(id);
         return this;
     }
 
@@ -52,7 +52,18 @@ public final class ShortLinkDtoBuilder {
      * @return the dto builder
      */
     public ShortLinkDtoBuilder createdDate(Date createdDate) {
-        linkDto.setCreatedDate(createdDate);
+        shortLinkDto.setCreatedDate(createdDate);
+        return this;
+    }
+
+    /**
+     * User login short link dto builder.
+     *
+     * @param userLogin the user login
+     * @return the short link builder
+     */
+    public ShortLinkDtoBuilder userLogin(String userLogin) {
+        shortLinkDto.setUserLogin(userLogin);
         return this;
     }
 
@@ -68,7 +79,7 @@ public final class ShortLinkDtoBuilder {
             //pathUrl.append(System.getenv("DOMAIN"));
             pathUrl.append("/");
             pathUrl.append(shortUrl);
-            linkDto.setShortUrl(pathUrl.toString());
+            shortLinkDto.setShortUrl(pathUrl.toString());
         }else {
             throw new NotFoundEntityException("Not found DOMAIN intro Environment");
         }
@@ -82,7 +93,7 @@ public final class ShortLinkDtoBuilder {
      * @return the dto builder
      */
     public ShortLinkDtoBuilder longUrl(String longUrl) {
-        linkDto.setLongUrl(longUrl);
+        shortLinkDto.setLongUrl(longUrl);
         return this;
     }
 
@@ -93,7 +104,7 @@ public final class ShortLinkDtoBuilder {
      * @return the dto builder
      */
     public ShortLinkDtoBuilder totalClicks(Long totalClicks) {
-        linkDto.setTotalClicks(totalClicks);
+        shortLinkDto.setTotalClicks(totalClicks);
         return this;
     }
 
@@ -103,6 +114,6 @@ public final class ShortLinkDtoBuilder {
      * @return the dto
      */
     public ShortLinkDto build() {
-        return linkDto;
+        return shortLinkDto;
     }
 }

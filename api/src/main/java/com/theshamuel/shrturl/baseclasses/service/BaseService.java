@@ -36,6 +36,13 @@ public interface BaseService<T extends BaseEntity, E extends BaseEntity> {
 
 
     /**
+     * Find all list.
+     *
+     * @return the list of entities
+     */
+    List<T> findAll();
+
+    /**
      * Get count of collection.
      *
      * @return the size of collection

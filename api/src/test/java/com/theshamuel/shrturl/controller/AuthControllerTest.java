@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * The tests for {@link AuthController}
+ * The Auth controller tests. {@link AuthController}
  *
  * @author Alex Gladkikh
  */

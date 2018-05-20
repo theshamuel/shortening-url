@@ -1,8 +1,8 @@
 package com.theshamuel.shrturl.controller;
 
-import com.theshamuel.shrturl.buiders.TestUtils;
+import com.theshamuel.shrturl.commons.TestUtils;
 import com.theshamuel.shrturl.controllers.RedirectController;
-import com.theshamuel.shrturl.model.statistics.service.RedirectService;
+import com.theshamuel.shrturl.redirect.RedirectService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -15,7 +15,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * The type Redirect controller test.
+ * The Redirect controller tests.  {@link RedirectController}
+ *
+ * @author Alex Gladkikh
  */
 public class RedirectControllerTest {
 

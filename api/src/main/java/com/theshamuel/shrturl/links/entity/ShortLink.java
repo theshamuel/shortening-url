@@ -25,8 +25,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "shortlinks")
 public class ShortLink extends BaseEntity {
 
-    @Field("user")
-    private String login;
+    @Field("userLogin")
+    private String userLogin;
 
     @Field("shortUrl")
     private String shortUrl;
@@ -37,12 +37,22 @@ public class ShortLink extends BaseEntity {
     @Field("totalClicks")
     private Long totalClicks;
 
-    public String getLogin() {
-        return login;
+    /**
+     * Gets user login.
+     *
+     * @return the user login
+     */
+    public String getUserLogin() {
+        return userLogin;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    /**
+     * Sets user login.
+     *
+     * @param userLogin the user login
+     */
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
     }
 
     /**

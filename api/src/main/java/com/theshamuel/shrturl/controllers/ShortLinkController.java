@@ -11,6 +11,7 @@
  */
 package com.theshamuel.shrturl.controllers;
 
+import com.theshamuel.shrturl.links.dao.ShortLinkRepository;
 import com.theshamuel.shrturl.links.dto.ShortLinkDto;
 import com.theshamuel.shrturl.links.dto.ShortLinkDtoBuilder;
 import com.theshamuel.shrturl.links.entity.ShortLink;
@@ -19,8 +20,6 @@ import com.theshamuel.shrturl.utils.Utils;
 import io.jsonwebtoken.Claims;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +46,11 @@ public class ShortLinkController {
     ShortLinkService shortLinkServices;
 
     /**
+     * The Short link repository.
+     */
+    ShortLinkRepository shortLinkRepository;
+
+    /**
      * Gets claims.
      *
      * @param request the servlet request
@@ -58,24 +62,25 @@ public class ShortLinkController {
     }
 
     /**
-     * Instantiates a new ShortLink controller.
+     * Instantiates a new Short link controller.
      *
-     * @param shortLinkServices the short link services
+     * @param shortLinkServices   the short link services
+     * @param shortLinkRepository the short link repository
      */
-    @Autowired
-    public ShortLinkController(ShortLinkService shortLinkServices) {
+    public ShortLinkController(ShortLinkService shortLinkServices, ShortLinkRepository shortLinkRepository) {
         this.shortLinkServices = shortLinkServices;
+        this.shortLinkRepository = shortLinkRepository;
     }
-
 
     /**
      * Create short URL and response result.
      *
+     * @param claims  the claims
      * @param linkDto the short link dto
      * @return the response entity
      */
     @PostMapping(value = "/links")
-    public ResponseEntity<ShortLink> createLink(@RequestBody ShortLinkDto linkDto){
+    public ResponseEntity<ShortLink> createLink(@ModelAttribute("claims") Claims claims, @RequestBody ShortLinkDto linkDto){
             if (linkDto !=null && linkDto.getLongUrl()!=null) {
                 String url = null;
                 if (linkDto.getLongUrl().toLowerCase().contains(".рф"))
@@ -83,7 +88,7 @@ public class ShortLinkController {
                 else
                     url = linkDto.getLongUrl();
 
-                ShortLinkDto link = new ShortLinkDtoBuilder().longUrl(url).totalClicks(0L).createdDate(new Date()).build();
+                ShortLinkDto link = new ShortLinkDtoBuilder().longUrl(url).totalClicks(0L).createdDate(new Date()).userLogin(claims!=null?claims.getSubject():"anonymous").build();
 
                 return new ResponseEntity(shortLinkServices.save(link), HttpStatus.CREATED);
             }
@@ -100,10 +105,23 @@ public class ShortLinkController {
     public ResponseEntity<List> getAllShortLinks(@ModelAttribute("claims") Claims claims){
         if (claims.get("roles",String.class)!=null &&
                 claims.get("roles",String.class).toLowerCase().equals("admin")) {
-            return new ResponseEntity(shortLinkServices.findAll(new Sort(new Sort.Order(Sort.Direction.ASC, "createdDate"))), HttpStatus.OK);
+            return new ResponseEntity(shortLinkServices.findAll(), HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.FORBIDDEN);
     }
+
+
+    /**
+     * Get short links by user response entity.
+     *
+     * @param userLogin the user login
+     * @return the response entity
+     */
+    @GetMapping(value = "/links/user/{userLogin}")
+    public ResponseEntity<List> getShortLinksByUser( @PathVariable String userLogin){
+            return new ResponseEntity(shortLinkRepository.findShortUrlsByUser(userLogin,null), HttpStatus.OK);
+    }
+
 
     /**
      * Delete short url response entity.
@@ -117,7 +135,7 @@ public class ShortLinkController {
                                          @PathVariable String shortUrl){
         if (claims.get("roles",String.class)!=null &&
                 claims.get("roles",String.class).toLowerCase().equals("admin")) {
-            ShortLink shortLink = shortLinkServices.findByShortUrl(shortUrl);
+            ShortLink shortLink = shortLinkRepository.findByShortUrl(shortUrl);
             if (shortLink != null) {
                 shortLinkServices.delete(shortLink.getId());
                 return new ResponseEntity(HttpStatus.OK);

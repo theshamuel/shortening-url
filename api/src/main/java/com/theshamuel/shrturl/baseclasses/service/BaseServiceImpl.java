@@ -63,6 +63,21 @@ public abstract class BaseServiceImpl<T extends BaseEntity, E extends BaseEntity
      * {@inheritDoc}
      */
     @Override
+    public List<T> findAll() {
+        final List<T> result = new ArrayList<>();
+        Optional<List<E>> listOfEntities = Optional.ofNullable(mongoRepository.findAll(new Sort(new Sort.Order(Sort.Direction.ASC, "createdDate"))));
+        listOfEntities.ifPresent(item->{
+            item.forEach(e-> {
+                result.add(obj2dto(e));
+            });
+        });
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public long count() {
         return mongoRepository.count();
     }

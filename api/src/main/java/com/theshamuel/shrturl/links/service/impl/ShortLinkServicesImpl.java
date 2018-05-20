@@ -98,9 +98,4 @@ public class ShortLinkServicesImpl extends BaseServiceImpl<ShortLinkDto,ShortLin
         return true;
     }
 
-    @Override
-    public ShortLink findByShortUrl(String shortUrl) {
-        ShortLink shortLink = shortLinkRepository.findByShortUrl(shortUrl);
-        return shortLink;
-    }
 }

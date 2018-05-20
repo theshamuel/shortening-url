@@ -12,6 +12,10 @@
 package com.theshamuel.shrturl.links.dao;
 
 import com.theshamuel.shrturl.links.entity.ShortLink;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoOperations;
+
+import java.util.List;
 
 /**
  * The interface ShortLink operations.
@@ -22,10 +26,28 @@ public interface ShortLinkOperations {
 
     /**
      * Find by short URL link.
+     * If sort set as null, default sort will be ASC by created date
      *
      * @param shortUrl the short url
      * @return the short link entity
      */
     ShortLink findByShortUrl(String shortUrl);
 
+
+    /**
+     * Find short urls by user list.
+     * If sort set as null, default sort will be ASC by created date
+     *
+     * @param userLogin the user login
+     * @param sort      the sort
+     * @return the list
+     */
+    List findShortUrlsByUser(String userLogin, Sort sort);
+
+    /**
+     * Sets mongo provider.
+     *
+     * @param mongo operation implementation
+     */
+    void setMongo(MongoOperations mongo);
 }

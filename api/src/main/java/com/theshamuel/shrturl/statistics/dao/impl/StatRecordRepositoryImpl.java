@@ -74,7 +74,22 @@ public class StatRecordRepositoryImpl implements StatRecordOperations {
      * {@inheritDoc}
      */
     @Override
-    public List<StatRecordDto> getStatisticsByShortUrlByPeriod(String shortUrl, Date startDate, Date endDate) {
+    public List getStatisticsByUserByPeriod(List<String> userUrls, Date startDate, Date endDate) {
+
+        Map<String,List> resultByCountry = new ConcurrentHashMap<>(getStatisticsCountryByUserByPeriod(userUrls,startDate,endDate).stream().collect(Collectors.toMap(StatRecordDto::getShortUrl, StatRecordDto::getCountry)));
+
+        Map<String,List> resultByBrowser = new ConcurrentHashMap<>(getStatisticsBrowserByUserByPeriod(userUrls,startDate,endDate).stream().collect(Collectors.toMap(StatRecordDto::getShortUrl, StatRecordDto::getBrowser)));
+
+        Map<String,List> resultByOS = new ConcurrentHashMap<>(getStatisticsOsByUserByPeriod(userUrls, startDate,endDate).stream().collect(Collectors.toMap(StatRecordDto::getShortUrl, StatRecordDto::getOperationSystem)));
+
+
+        return collectResult(resultByCountry,resultByBrowser,resultByOS); }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StatRecordDto getStatisticsByShortUrlByPeriod(String shortUrl, Date startDate, Date endDate) {
 
         Map<String,List> resultByCountry = new ConcurrentHashMap<>(getStatisticsCountryByShortUrlByPeriod(shortUrl,startDate,endDate).stream().collect(Collectors.toMap(StatRecordDto::getShortUrl, StatRecordDto::getCountry)));
 
@@ -83,8 +98,8 @@ public class StatRecordRepositoryImpl implements StatRecordOperations {
         Map<String,List> resultByOS = new ConcurrentHashMap<>(getStatisticsOsByShortUrlByPeriod(shortUrl, startDate,endDate).stream().collect(Collectors.toMap(StatRecordDto::getShortUrl, StatRecordDto::getOperationSystem)));
 
 
-
-        return collectResult(resultByCountry,resultByBrowser,resultByOS);
+        List<StatRecordDto> tmpRes = collectResult(resultByCountry,resultByBrowser,resultByOS);
+        return tmpRes.size()>0?tmpRes.get(0):null;
 
     }
 
@@ -108,6 +123,20 @@ public class StatRecordRepositoryImpl implements StatRecordOperations {
     @Override
     public List<StatRecordDto> getStatisticsCountryByShortUrlByPeriod(String shortUrl, Date startDate, Date endDate) {
         Aggregation aggByCountry = newAggregation(match(new Criteria().andOperator(where("shortUrl").is(shortUrl),where("createdDate").gte(startDate),where("createdDate").lte(endDate)))
+                ,group("shortUrl","country").count().as("totalClicks"),project("shortUrl","country","totalClicks"),
+                group("shortUrl").push(new BasicDBObject("label", "$country")
+                        .append("clicks", "$totalClicks" )
+                ).as("country"),project("country").and("shortUrl").previousOperation());
+
+        return mongo.aggregate(aggByCountry, "statistics", StatRecordDto.class).getMappedResults();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<StatRecordDto> getStatisticsCountryByUserByPeriod(List<String> shortUrls, Date startDate, Date endDate) {
+        Aggregation aggByCountry = newAggregation(match(new Criteria().andOperator(where("shortUrl").in(shortUrls),where("createdDate").gte(startDate),where("createdDate").lte(endDate)))
                 ,group("shortUrl","country").count().as("totalClicks"),project("shortUrl","country","totalClicks"),
                 group("shortUrl").push(new BasicDBObject("label", "$country")
                         .append("clicks", "$totalClicks" )
@@ -148,6 +177,20 @@ public class StatRecordRepositoryImpl implements StatRecordOperations {
      * {@inheritDoc}
      */
     @Override
+    public List<StatRecordDto> getStatisticsBrowserByUserByPeriod(List<String> shortUrls, Date startDate, Date endDate) {
+        Aggregation aggByBrowser = newAggregation(match(new Criteria().andOperator(where("shortUrl").in(shortUrls),where("createdDate").gte(startDate),where("createdDate").lte(endDate)))
+                ,group("shortUrl","browser").count().as("totalClicks"),project("shortUrl","browser","totalClicks"),
+                group("shortUrl").push(new BasicDBObject("label", "$browser")
+                        .append("clicks", "$totalClicks" )
+                ).as("browser"),project("browser").and("shortUrl").previousOperation());
+
+        return mongo.aggregate(aggByBrowser, "statistics", StatRecordDto.class).getMappedResults();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<StatRecordDto> getStatisticsOsByPeriod(Date startDate, Date endDate) {
         Aggregation aggByOs = newAggregation(match(new Criteria().andOperator(where("createdDate").gte(startDate),where("createdDate").lte(endDate)))
                 ,group("shortUrl","operationSystem").count().as("totalClicks"),project("shortUrl","operationSystem","totalClicks"),
@@ -162,14 +205,36 @@ public class StatRecordRepositoryImpl implements StatRecordOperations {
      * {@inheritDoc}
      */
     @Override
-    public List<StatRecordDto> getStatisticsOsByShortUrlByPeriod(String shortUrl, Date startDate, Date endDate) {
-        Aggregation aggByOs = newAggregation(match(new Criteria().andOperator(where("shortUrl").is(shortUrl),where("createdDate").gte(startDate),where("createdDate").lte(endDate)))
+    public List<StatRecordDto> getStatisticsOsByShortUrlByPeriod(String shortUrls, Date startDate, Date endDate) {
+        Aggregation aggByOs = newAggregation(match(new Criteria().andOperator(where("shortUrl").is(shortUrls),where("createdDate").gte(startDate),where("createdDate").lte(endDate)))
                 ,group("shortUrl","operationSystem").count().as("totalClicks"),project("shortUrl","operationSystem","totalClicks"),
                 group("shortUrl").push(new BasicDBObject("label", "$operationSystem")
                         .append("clicks", "$totalClicks" )
                 ).as("operationSystem"),project("operationSystem").and("shortUrl").previousOperation());
         return mongo.aggregate(aggByOs, "statistics", StatRecordDto.class).getMappedResults();
 
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<StatRecordDto> getStatisticsOsByUserByPeriod(List<String> shortUrls, Date startDate, Date endDate) {
+        Aggregation aggByOs = newAggregation(match(new Criteria().andOperator(where("shortUrl").in(shortUrls),where("createdDate").gte(startDate),where("createdDate").lte(endDate)))
+                ,group("shortUrl","operationSystem").count().as("totalClicks"),project("shortUrl","operationSystem","totalClicks"),
+                group("shortUrl").push(new BasicDBObject("label", "$operationSystem")
+                        .append("clicks", "$totalClicks" )
+                ).as("operationSystem"),project("operationSystem").and("shortUrl").previousOperation());
+        return mongo.aggregate(aggByOs, "statistics", StatRecordDto.class).getMappedResults();
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setMongo(MongoOperations mongo) {
+        this.mongo = mongo;
     }
 
     private List <StatRecordDto> collectResult(Map<String,List> resultByCountry, Map<String,List>  resultByBrowser, Map<String,List>  resultByOS){

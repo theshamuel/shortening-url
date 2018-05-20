@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * The tests for {@link UserController}
+ * The User controller tests. {@link UserController}
  *
  * @author Alex Gladkikh
  */

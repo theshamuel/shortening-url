@@ -11,6 +11,9 @@
  */
 package com.theshamuel.shrturl.statistics.dao;
 
+import com.theshamuel.shrturl.statistics.dto.StatRecordDto;
+import org.springframework.data.mongodb.core.MongoOperations;
+
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +23,7 @@ import java.util.List;
 public interface StatRecordOperations {
 
     /**
-     * Count by short url long.
+     * Count by short url.
      *
      * @param shortUrl the short url
      * @return the long
@@ -37,6 +40,17 @@ public interface StatRecordOperations {
      */
     List getAllStatisticsByPeriod(Date startDate, Date endDate);
 
+
+    /**
+     * Gets statistics by user by period.
+     *
+     * @param userUrls  the user urls
+     * @param startDate the start date
+     * @param endDate   the end date
+     * @return the statistics by user by period
+     */
+    List getStatisticsByUserByPeriod(List<String> userUrls, Date startDate, Date endDate);
+
     /**
      * Gets statistics by short url for period by country.
      *
@@ -45,7 +59,7 @@ public interface StatRecordOperations {
      * @param endDate   the end date
      * @return the statistics by short url by period by country
      */
-    List getStatisticsByShortUrlByPeriod(String shortUrl, Date startDate, Date endDate);
+    StatRecordDto getStatisticsByShortUrlByPeriod(String shortUrl, Date startDate, Date endDate);
 
     /**
      * Gets statistics country by period.
@@ -66,6 +80,17 @@ public interface StatRecordOperations {
      */
     List getStatisticsCountryByShortUrlByPeriod(String shortUrl, Date startDate, Date endDate);
 
+
+    /**
+     * Gets statistics country by user by period.
+     *
+     * @param shortUrls the short urls by user
+     * @param startDate the start date
+     * @param endDate   the end date
+     * @return the statistics country by user by period
+     */
+    List getStatisticsCountryByUserByPeriod(List<String> shortUrls, Date startDate, Date endDate);
+
     /**
      * Gets statistics browser by period.
      *
@@ -85,6 +110,17 @@ public interface StatRecordOperations {
      */
     List getStatisticsBrowserByShortUrlByPeriod(String shortUrl, Date startDate, Date endDate);
 
+
+    /**
+     * Gets statistics browser by user by period.
+     *
+     * @param shortUrls the short urls by user
+     * @param startDate the start date
+     * @param endDate   the end date
+     * @return the statistics browser by user by period
+     */
+    List getStatisticsBrowserByUserByPeriod(List<String> shortUrls, Date startDate, Date endDate);
+
     /**
      * Gets statistics os by period.
      *
@@ -94,13 +130,32 @@ public interface StatRecordOperations {
      */
     List getStatisticsOsByPeriod(Date startDate, Date endDate);
 
+
     /**
-     * Gets statistics os by short url by period by.
+     * Gets statistics os by short url by period.
      *
      * @param shortUrl  the short url
      * @param startDate the start date
      * @param endDate   the end date
-     * @return the statistics os by short url by period by
+     * @return the statistics os by short url by period
      */
     List getStatisticsOsByShortUrlByPeriod(String shortUrl, Date startDate, Date endDate);
+
+
+    /**
+     * Gets statistics os by user by period.
+     *
+     * @param shortUrls the short urls by user
+     * @param startDate the start date
+     * @param endDate   the end date
+     * @return the statistics os by user by period
+     */
+    List getStatisticsOsByUserByPeriod(List<String> shortUrls, Date startDate, Date endDate);
+
+    /**
+     * Sets mongo provider.
+     *
+     * @param mongo operation implementation
+     */
+    void setMongo(MongoOperations mongo);
 }

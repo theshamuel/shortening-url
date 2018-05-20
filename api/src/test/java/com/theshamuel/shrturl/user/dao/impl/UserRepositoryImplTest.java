@@ -10,19 +10,22 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 /**
- * The integration tests for {@link UserRepositoryImpl}
+ * The User repository tests. {@link UserRepositoryImpl}
  *
  * @author Alex Gladkikh
  */
 public class UserRepositoryImplTest extends BaseRepositoryImplTest{
 
-    private UserRepositoryImpl userRepositoryImpl = new UserRepositoryImpl();
+    private UserRepositoryImpl userRepository = new UserRepositoryImpl();
 
+    /**
+     * Test find by login.
+     */
     @Test
     public void testFindByLogin() {
         User expected = new UserBuilder().login("admin").password("123").salt("salt").author("admin").build();
         createTestRecords();
-        User actual = userRepositoryImpl.findByLogin("admin");
+        User actual = userRepository.findByLogin("admin");
         expected.setId(actual.getId());
         assertThat(actual,is(equalTo(expected)));
     }
@@ -37,7 +40,7 @@ public class UserRepositoryImplTest extends BaseRepositoryImplTest{
 
     @Override
     public void setMongo() {
-        userRepositoryImpl.setMongo(template);
+        userRepository.setMongo(template);
     }
 
 }

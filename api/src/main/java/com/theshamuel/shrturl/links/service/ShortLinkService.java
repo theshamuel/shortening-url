@@ -29,12 +29,4 @@ public interface ShortLinkService extends BaseService<ShortLinkDto,ShortLink> {
      * @return the result (true - is unique, false - there is the same sequence into store)
      */
     boolean isShortLinkServiceUnique(String shortUrl);
-
-    /**
-     * Find by short url short link.
-     *
-     * @param shortUrl the short URL
-     * @return the short link
-     */
-    ShortLink findByShortUrl(String shortUrl);
 }

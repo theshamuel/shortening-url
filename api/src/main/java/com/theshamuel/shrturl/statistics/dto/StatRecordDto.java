@@ -25,6 +25,8 @@ public class StatRecordDto {
 
     private String shortUrl;
 
+    private String userLogin;
+
     private List<Country> country;
 
     private List<Browser> browser;
@@ -33,38 +35,96 @@ public class StatRecordDto {
 
     private Long totalClicks;
 
-
-    public List<Country> getCountry() {
-        return country;
-    }
-
-    public void setCountry(List<Country> country) {
-        this.country = country;
-    }
-
-    public List<Browser> getBrowser() {
-        return browser;
-    }
-
-    public void setBrowser(List<Browser> browser) {
-        this.browser = browser;
-    }
-
-    public List<OperationSystem> getOperationSystem() {
-        return operationSystem;
-    }
-
-    public void setOperationSystem(List<OperationSystem> operationSystem) {
-        this.operationSystem = operationSystem;
-    }
-
+    /**
+     * Gets short url.
+     *
+     * @return the short url
+     */
     public String getShortUrl() {
         return shortUrl;
     }
 
+    /**
+     * Sets short url.
+     *
+     * @param shortUrl the short url
+     */
     public void setShortUrl(String shortUrl) {
         this.shortUrl = shortUrl;
     }
+
+    /**
+     * Gets user login.
+     *
+     * @return the user login
+     */
+    public String getUserLogin() {
+        return userLogin;
+    }
+
+    /**
+     * Sets user login.
+     *
+     * @param userLogin the user login
+     */
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
+    }
+
+    /**
+     * Gets country.
+     *
+     * @return the country
+     */
+    public List<Country> getCountry() {
+        return country;
+    }
+
+    /**
+     * Sets country.
+     *
+     * @param country the country
+     */
+    public void setCountry(List<Country> country) {
+        this.country = country;
+    }
+
+    /**
+     * Gets browser.
+     *
+     * @return the browser
+     */
+    public List<Browser> getBrowser() {
+        return browser;
+    }
+
+    /**
+     * Sets browser.
+     *
+     * @param browser the browser
+     */
+    public void setBrowser(List<Browser> browser) {
+        this.browser = browser;
+    }
+
+    /**
+     * Gets operation system.
+     *
+     * @return the operation system
+     */
+    public List<OperationSystem> getOperationSystem() {
+        return operationSystem;
+    }
+
+    /**
+     * Sets operation system.
+     *
+     * @param operationSystem the operation system
+     */
+    public void setOperationSystem(List<OperationSystem> operationSystem) {
+        this.operationSystem = operationSystem;
+    }
+
 
     /**
      * Gets total clicks.
