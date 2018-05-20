@@ -1,0 +1,10 @@
+*elk/data/nodes*
+database
+*db*
+*dd-replica*
+*-log.json
+*.log
+target
+*.iml
+*.*agz*
+.idea/
