@@ -218,7 +218,7 @@ public class StatRecordDto {
          * @return the stat record dto builder
          */
         public Builder shortUrl(String shortUrl) {
-            StringBuilder pathUrl = new StringBuilder();//"http://localhost:82"
+            StringBuilder pathUrl = new StringBuilder();
             if (System.getenv("DOMAIN")!=null && System.getenv("DOMAIN").trim().length()>0) {
                 pathUrl.append(System.getenv("DOMAIN"));
                 pathUrl.append("/");
