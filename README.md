@@ -127,7 +127,7 @@ For creating new link you do not have to get JWT by valid User.
            	"totalClicks": 0
            }`
     - Ex: `curl --request POST \
-       --url http://localhost:8081/api/v1/links \
+       --url http://localhost/api/v1/links \
        --data '{
      "longUrl":"https://www.google.com/search?hl=en&sugexp=les;&gs_nf=1&gs_mss=how%20do%20I%20iron%20a%20s&tok=POkeFnEdGVTAw_InGMW-Og&cp=21&gs_id=2j&xhr=t&q=how%20do%20I%20iron%20a%20shirt&pf=p&sclient=psy-ab&oq=how+do+I+iron+a+shirt&gs_l=&pbx=1&bav=on.2,or.r_gc.r_pw.r_cp.r_qf.&biw=1600&bih=775&cad=h"
      }'`
@@ -143,7 +143,13 @@ For getting statistics you have to get JWT by valid User with ADMIN role.
 		"longUrl": <>,
 		"totalClicks": <>
 	}]`
-    - Ex: ``
+    - Ex: `curl --request GET \
+        --url http://localhost/api/v1/links/ \
+        --header 'authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTUyNjgyNTkwOCwiZXhwIjo0NjgwNDI1OTA4fQ.VQV4mhddChLi-hIKtV6CsSX7CfsYdHfOcHiW-LlbHxQ' \
+        --header 'content-type: application/json' \
+        --data '{
+	    "longUrl":"http://google.com/search?hl=en&sugexp=les;&gs_nf=1&gs_mss=how%20do%20I%20iron…"
+    }'`
     
 
 For getting statistics you have to get JWT by valid User with ADMIN role.
@@ -156,12 +162,21 @@ For getting statistics you have to get JWT by valid User with ADMIN role.
 		"longUrl": <>,
 		"totalClicks": <>
 	}]`
-    - Ex: ``
+    - Ex: `curl --request GET \
+  --url http://localhost/api/v1/links/user/admin \
+  --header 'authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTUyNjgyNTkwOCwiZXhwIjo0NjgwNDI1OTA4fQ.VQV4mhddChLi-hIKtV6CsSX7CfsYdHfOcHiW-LlbHxQ' \
+  --header 'content-type: application/json' \
+  --data '{
+	"longUrl":"http://google.com/search?hl=en&sugexp=les;&gs_nf=1&gs_mss=how%20do%20I%20iron…"
+}'`
 
 ### Delete link from system
 For getting statistics you have to get JWT by valid User with ADMIN role.
  1. Delete list of links by user shorted URL: `DELETE: /api/v1/links/{shortUrl}`
-    - Ex: ``
+    - Ex: `curl --request DELETE \
+  --url http://localhost:82/api/v1/links/ZX0VgTOR \
+  --header 'authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImNkYXRlIjp7InllYXIiOjIwMTgsIm1vbnRoIjoiTUFZIiwiZGF5T2ZNb250aCI6MjAsImRheU9mV2VlayI6IlNVTkRBWSIsImRheU9mWWVhciI6MTQwLCJtb250aFZhbHVlIjo1LCJob3VyIjoyLCJtaW51dGUiOjU5LCJzZWNvbmQiOjU5LCJuYW5vIjowLCJjaHJvbm9sb2d5Ijp7ImlkIjoiSVNPIiwiY2FsZW5kYXJUeXBlIjoiaXNvODYwMSJ9fSwiaWF0IjoxNTI2NzEzMzQzLCJleHAiOjE1Mjc5MTMzNDN9.1aArsrGD4oFlK37Veeyj-g_WGYCXHs72hAPvA4jrfPY' \
+  --header 'content-type: application/json'`
     
 
 ### Get statistics
