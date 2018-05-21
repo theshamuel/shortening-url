@@ -1,0 +1,143 @@
+version: '3.3'
+services:
+      shrturl-db:
+          build: db
+          hostname: shrturl-db
+          restart: always
+          container_name: shrturl-db
+          logging:
+            driver: json-file
+            options:
+                max-size: "10m"
+                max-file: "5"
+          volumes:
+              - ./db/data:/data/db
+              - ./backup:/backup
+          ports:
+              - "57017:27017"
+          environment:
+              - TZ=Europe/Moscow
+              - MONGO_AUTH=false
+              - MONGO_SERVER=shrturldb
+              - MONGO_BACKUP=true
+              - MONGO_PORT=27017
+              - MONGO_DB=shrturlDB
+              - MONGO_RESTORE=false
+              - MONGO_ARCHIVE=shrturldb_starter.tar.gz
+              - MONGO_ADMIN=admin
+              - MONGO_ADMIN_PASSWORD=admin
+              - MONGO_USER=user
+              - MONGO_USER_PASSWORD=user
+              - COPY_TO_S3=
+              - AWS_ACCESS_KEY_ID=
+              - AWS_SECRET_KEY=
+              - AWS_PATH=
+          sysctls:
+              - net.ipv4.tcp_keepalive_time=120
+          privileged: true
+      shrturl-db-replica-1:
+          build: db-replica-1
+          hostname: shrturl-db-replica-1
+          restart: always
+          container_name: shrturl-db-replica-1
+          logging:
+            driver: json-file
+            options:
+                max-size: "10m"
+                max-file: "5"
+          volumes:
+              - ./db-replica-1/data:/data/db
+              - ./backup:/backup
+          ports:
+              - "37017:27017"
+          environment:
+              - TZ=Europe/Moscow
+              - MONGO_AUTH=false
+              - MONGO_SERVER=shrturldb
+              - MONGO_BACKUP=true
+              - MONGO_PORT=27017
+              - MONGO_DB=shrturlDB
+              - MONGO_RESTORE=false
+              - MONGO_ADMIN=admin
+              - MONGO_ADMIN_PASSWORD=admin
+              - MONGO_USER=user
+              - MONGO_USER_PASSWORD=user
+              - COPY_TO_S3=
+              - AWS_ACCESS_KEY_ID=
+              - AWS_SECRET_KEY=
+              - AWS_PATH
+          sysctls:
+              - net.ipv4.tcp_keepalive_time=120
+          privileged: true
+
+    shrturl-api:
+        build: api
+        hostname: shrturl-api
+        restart: always
+        container_name: shrturl-api
+        logging:
+          driver: json-file
+          options:
+              max-size: "10m"
+              max-file: "5"
+        volumes:
+          - ./log/shrturl_logs:/var/log/shrturl_logs
+        ports:
+            - "9001:9000"
+        environment:
+              - TZ=Europe/Moscow
+              - VERSION=0.0.1
+              - DOMAIN=
+              - MONGO_SERVER=shrturl-db
+              - MONGO_PORT=27017
+              - MONGO_DB=shrturlDB
+              - MONGO_USER=
+              - MONGO_USER_PASSWORD=
+        depends_on:
+            - shrturl-db
+
+      shrturl-web:
+        build: web
+        hostname: shrturl-web
+        restart: always
+        container_name: shrturl-web
+        logging:
+          driver: json-file
+          options:
+              max-size: "10m"
+              max-file: "5"
+        volumes:
+            - ./web/src/:/usr/share/nginx/pages
+        ports:
+            - "8081:80"
+            - "8443:443"
+        environment:
+            - TZ=Europe/Moscow
+            - PROXY_SERVER=shrturl-api
+            - PROXY_PORT=9000
+        depends_on:
+            - shrturl-api
+
+    #   monit:
+    #     image: umputun/monit-docker
+    #     hostname: monit
+    #     restart: always
+    #     container_name: monit
+    #     logging:
+    #       driver: json-file
+    #       options:
+    #           max-size: "10m"
+    #           max-file: "5"
+    #     ports:
+    #       - "9009:9009"
+    #     volumes:
+    #       - ./monit.conf.d:/etc/monit/conf.d
+    #       - /var/run/docker.sock:/var/run/docker.sock
+    #       - /srv:/hostsrv:ro
+    #       - /root:/hostroot:ro
+    #     environment:
+    #       - MHOST=127.0.0.1
+    #       - MAIL_SERVER=<set_smtp_server> port <set_smtp_port> username <set_smtp_login> password <set_smtp_pwd> using sslauto
+    #       - ALERT_EMAIL=<set_alert_email>
+    #       - MONIT_USER=<set_monit_user>
+    #       - MONIT_PASS=<set_monit_pwd>

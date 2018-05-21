@@ -1,7 +1,7 @@
 *elk/data/nodes*
 database
 *db/data*
-*db-replica/data*
+*db-replica-1/data*
 *-log.json
 *.log
 target
