@@ -17,6 +17,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.Date;
+
 /**
  * The ShortLink entity class.
  *
@@ -36,6 +38,37 @@ public class ShortLink extends BaseEntity {
 
     @Field("totalClicks")
     private Long totalClicks;
+
+    /**
+     * Instantiates a new ShortLink.
+     */
+    public ShortLink() {
+    }
+
+    /**
+     * Instantiates a new ShortLink.
+     *
+     * @param builder the builder
+     */
+    public ShortLink(Builder builder) {
+
+        setId(builder.id);
+
+        setCreatedDate(builder.createdDate);
+
+        setModifyDate(builder.modifyDate);
+
+        setAuthor(builder.author);
+
+        setUserLogin(builder.userLogin);
+
+        setShortUrl(builder.shortUrl);
+
+        setLongUrl(builder.longUrl);
+
+        setTotalClicks(builder.totalClicks);
+
+    }
 
     /**
      * Gets user login.
@@ -107,6 +140,140 @@ public class ShortLink extends BaseEntity {
      */
     public void setTotalClicks(Long totalClicks) {
         this.totalClicks = totalClicks;
+    }
+
+    /**
+     * Builder builder.
+     *
+     * @return the builder
+     */
+    public static Builder builder(){
+        return new Builder();
+    }
+
+    /**
+     * The ShortLink entity builder.
+     */
+    public static final class Builder {
+        private String id;
+
+        private Date createdDate;
+
+        private Date modifyDate;
+
+        private String author;
+
+        private String userLogin;
+
+        private String shortUrl;
+
+        private String longUrl;
+
+        private Long totalClicks;
+
+        /**
+         * Instantiates a new ShortLink builder.
+         */
+        public Builder() {
+
+        }
+
+        /**
+         * Id short link builder.
+         *
+         * @param id the id
+         * @return the builder
+         */
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        /**
+         * Created date short link builder.
+         *
+         * @param createdDate the created date
+         * @return the builder
+         */
+        public Builder createdDate(Date createdDate) {
+           this.createdDate = createdDate;
+            return this;
+        }
+
+        /**
+         * Modify date short link builder.
+         *
+         * @param modifyDate the modify date
+         * @return the builder
+         */
+        public Builder modifyDate(Date modifyDate) {
+            this.modifyDate = modifyDate;
+            return this;
+        }
+
+        /**
+         * Author builder.
+         *
+         * @param author the author
+         * @return the builder
+         */
+        public Builder author(String author) {
+            this.author = author;
+            return this;
+        }
+
+        /**
+         * User login short link builder.
+         *
+         * @param userLogin the user login
+         * @return the short link builder
+         */
+        public Builder userLogin(String userLogin) {
+            this.userLogin = userLogin;
+            return this;
+        }
+
+        /**
+         * Short url short link builder.
+         *
+         * @param shortUrl the short url
+         * @return the builder
+         */
+        public Builder shortUrl(String shortUrl) {
+            this.shortUrl = shortUrl;
+            return this;
+        }
+
+        /**
+         * Long url short link builder.
+         *
+         * @param longUrl the long url
+         * @return the builder
+         */
+        public Builder longUrl(String longUrl) {
+            this.longUrl = longUrl;
+            return this;
+        }
+
+        /**
+         * Total clicks short link builder.
+         *
+         * @param totalClicks the total clicks
+         * @return the builder
+         */
+        public Builder totalClicks(Long totalClicks) {
+            this.totalClicks = totalClicks;
+            return this;
+        }
+
+        /**
+         * Build short link.
+         *
+         * @return the result ShortLink entity
+         */
+        public ShortLink build() {
+            return new ShortLink(this);
+        }
     }
 
     @Override

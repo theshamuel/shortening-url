@@ -17,6 +17,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.Date;
+
 /**
  * The StatRecord entity class.
  *
@@ -39,6 +41,31 @@ public class StatRecord extends BaseEntity {
 
     @Field("country")
     private String country;
+
+    /**
+     * Instantiates a new Stat record.
+     */
+    public StatRecord() {
+    }
+
+    /**
+     * Instantiates a new StatRecord.
+     *
+     * @param builder the builder
+     */
+    public StatRecord(Builder builder) {
+        setId(builder.id);
+        setCreatedDate(builder.createdDate);
+        setModifyDate(builder.modifyDate);
+        setAuthor(builder.author);
+
+        setShortUrl(builder.shortUrl);
+        setIpaddress(builder.ipaddress);
+
+        setCountry(builder.country);
+        setBrowser(builder.browser);
+        setOperationSystem(builder.operationSystem);
+    }
 
     /**
      * Gets short URL.
@@ -120,6 +147,143 @@ public class StatRecord extends BaseEntity {
     public String getCountry() {
 
         return country;
+    }
+
+    /**
+     * Builder builder.
+     *
+     * @return the builder
+     */
+    public static Builder builder(){
+        return new Builder();
+    }
+
+    /**
+     * The StatRecord entity builder.
+     */
+    public static final class Builder {
+
+        private String id;
+
+        private Date createdDate;
+
+        private Date modifyDate;
+
+        private String author;
+
+        private String shortUrl;
+
+        private String ipaddress;
+
+        private String operationSystem;
+
+        private String browser;
+
+        private String country;
+
+
+        /**
+         * Id statistic record builder.
+         *
+         * @param id the id
+         * @return the statistic record builder
+         */
+        public Builder id(String id) {
+            this.id = id;
+            return this;
+        }
+
+        /**
+         * Created date statistic record builder.
+         *
+         * @param createdDate the created date
+         * @return the statistic record builder
+         */
+        public Builder createdDate(Date createdDate) {
+           this.createdDate = createdDate;
+            return this;
+        }
+
+        /**
+         * Modify date statistic record builder.
+         *
+         * @param modifyDate the modify date
+         * @return the statistic record builder
+         */
+        public Builder modifyDate(Date modifyDate) {
+            this.modifyDate = modifyDate;
+            return this;
+        }
+
+        public Builder author(String author) {
+            this.author = author;
+            return this;
+        }
+
+
+        /**
+         * Ipaddress statistic record builder.
+         *
+         * @param ipaddress the ip address
+         * @return the statistic record builder
+         */
+        public Builder ipaddress(String ipaddress) {
+            this.ipaddress = ipaddress;
+            return this;
+        }
+
+        /**
+         * Operation system statistic record builder.
+         *
+         * @param os the operation system
+         * @return the statistic record builder
+         */
+        public Builder operationSystem(String os) {
+            this.operationSystem = os;
+            return this;
+        }
+
+        /**
+         * Browser statistic record builder.
+         *
+         * @param browser the browser
+         * @return the statistic record builder
+         */
+        public Builder browser(String browser) {
+            this.browser = browser;
+            return this;
+        }
+
+        /**
+         * Short url statistic record builder.
+         *
+         * @param shortUrl the short URL
+         * @return the statistic record builder
+         */
+        public Builder shortUrl(String shortUrl) {
+            this.shortUrl = shortUrl;
+            return this;
+        }
+
+        /**
+         * Country statistic record builder.
+         *
+         * @param country the country
+         * @return the statistic record builder
+         */
+        public Builder country(String country) {
+            this.country = country;
+            return this;
+        }
+
+        /**
+         * Build statistic record.
+         *
+         * @return the statistic record
+         */
+        public StatRecord build() {
+            return new StatRecord(this);
+        }
     }
 
     /**

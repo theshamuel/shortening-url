@@ -12,6 +12,23 @@ public class BaseMetric {
     private Long clicks;
 
     /**
+     * Instantiates a new Base metric.
+     */
+    public BaseMetric() {
+    }
+
+    /**
+     * Instantiates a new Base metric.
+     *
+     * @param label  the label
+     * @param clicks the clicks
+     */
+    public BaseMetric(String label, Long clicks) {
+        this.label = label;
+        this.clicks = clicks;
+    }
+
+    /**
      * Gets label.
      *
      * @return the label

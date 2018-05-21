@@ -11,6 +11,7 @@
  */
 package com.theshamuel.shrturl.statistics.dto;
 
+import com.theshamuel.shrturl.exceptions.NotFoundParamsException;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -34,6 +35,33 @@ public class StatRecordDto {
     private List<OperationSystem> operationSystem;
 
     private Long totalClicks;
+
+    /**
+     * Instantiates a new Stat record dto.
+     */
+    public StatRecordDto() {
+    }
+
+    /**
+     * Instantiates a new Stat record dto.
+     *
+     * @param builder the builder
+     */
+    public StatRecordDto (Builder builder){
+
+        setShortUrl(builder.shortUrl);
+
+        setUserLogin(builder.userLogin);
+
+        setCountry(builder.country);
+
+        setBrowser(builder.browser);
+
+        setOperationSystem(builder.operationSystem);
+
+        setTotalClicks(builder.totalClicks);
+
+    }
 
     /**
      * Gets short url.
@@ -142,6 +170,119 @@ public class StatRecordDto {
      */
     public void setTotalClicks(Long totalClicks) {
         this.totalClicks = totalClicks;
+    }
+
+    /**
+     * Builder builder.
+     *
+     * @return the builder
+     */
+    public static Builder builder(){
+        return new Builder();
+    }
+
+    /**
+     * The type Statistic record dto (data transaction object) builder.
+     *
+     * @author Alex Gladkikh
+     */
+    public static final class Builder {
+
+        private String shortUrl;
+
+        private String userLogin;
+
+        private List<Country> country;
+
+        private List<Browser> browser;
+
+        private List<OperationSystem> operationSystem;
+
+        private Long totalClicks;
+
+        /**
+         * Instantiates a new Statistic record dto builder.
+         */
+        public Builder() {
+
+        }
+        public Builder userLogin (String userLogin){
+            this.userLogin = userLogin;
+            return this;
+        }
+
+        /**
+         * Short url stat record dto builder.
+         *
+         * @param shortUrl the short url
+         * @return the stat record dto builder
+         */
+        public Builder shortUrl(String shortUrl) {
+            StringBuilder pathUrl = new StringBuilder();//"http://localhost:82"
+            if (System.getenv("DOMAIN")!=null && System.getenv("DOMAIN").trim().length()>0) {
+                pathUrl.append(System.getenv("DOMAIN"));
+                pathUrl.append("/");
+                pathUrl.append(shortUrl);
+                this.shortUrl = pathUrl.toString();
+            }else {
+                throw new NotFoundParamsException("Not found variable $DOMAIN intro Environment");
+            }
+            return this;
+        }
+
+        /**
+         * Countries stat record dto builder.
+         *
+         * @param country the countries
+         * @return the stat record dto builder
+         */
+        public Builder country (List<Country> country){
+            this.country = country;
+            return this;
+        }
+
+        /**
+         * Browser builder.
+         *
+         * @param browser the browser
+         * @return the builder
+         */
+        public Builder browser (List<Browser> browser){
+            this.browser = browser;
+            return this;
+        }
+
+        /**
+         * Operation system builder.
+         *
+         * @param os the os
+         * @return the builder
+         */
+        public Builder operationSystem (List<OperationSystem> os){
+            this.operationSystem = os;
+            return this;
+        }
+
+        /**
+         * Total clicks stat record dto builder.
+         *
+         * @param totalClicks the total clicks
+         * @return the stat record dto builder
+         */
+        public Builder totalClicks(Long totalClicks) {
+            this.totalClicks = totalClicks;
+            return this;
+        }
+
+        /**
+         * Build stat record dto.
+         *
+         * @return the stat record dto
+         */
+        public StatRecordDto build() {
+            return new StatRecordDto(this);
+        }
+
     }
 
     @Override
