@@ -50,13 +50,25 @@ public class ShortUrlExceptionHandler {
      * @param e the exceptions
      * @return the response error
      */
+    @ExceptionHandler(NotFoundEntityException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public @ResponseBody
+    ResponseError notFoundEntity(NotFoundEntityException e) {
+        logger.error("ShrtUrlError:", e);
+        return new ResponseError( HttpStatus.NOT_FOUND.value(), e.getMessage());
+    }
+
+    /**
+     * Not found params response error.
+     *
+     * @param e the exceptions
+     * @return the response error
+     */
     @ExceptionHandler(NotFoundParamsException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public @ResponseBody
-    ResponseError notFoundEntity(NotFoundParamsException e) {
+    ResponseError notFoundParams(NotFoundParamsException e) {
         logger.error("ShrtUrlError:", e);
         return new ResponseError( HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
     }
-
-
 }
