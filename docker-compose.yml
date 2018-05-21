@@ -81,7 +81,7 @@ services:
               max-size: "10m"
               max-file: "5"
         volumes:
-          - ./log/shrturl_logs:/var/log/shrturl_logs
+          - ./log/shrturl_logs:/var/log/shrturl
         ports:
             - "9001:9000"
         environment:
