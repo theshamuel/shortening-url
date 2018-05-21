@@ -9,16 +9,16 @@ Tools: git,maven,docker.
 
 JDK version 1.8.0_45 is recommended for building jar archive. Build jar to `target` directory, after that if you are ready to release the built jar move it to `release` directiory.
 
-####Database
+#### Database
 The first start of db container import starter dumb of database with collection and demo admin-user for getting JWT token and manage `users and statistics` (admin/admin). The database is ready deploy on production and has all necessary indexes for optimisation in queries. Also for container has scripts for backup on host instanse and to AWS S3. If you need this setup specal enviroment variables.
 Important after first start change MONGO_RESTORE variable to false.
 
 There are deploy two containers of mongo `shrturl-db` - main, and `shrturl-db-replica` - for backuping.
 
-####API
+#### API
 The directory `api/release` has the first version of jar api (the version which will start into docker container is setting up as environment variable (VERSION) in shrturl-api service in docker-compose.yml)
 
-####Monit
+#### Monit
 If you have a smtp-server you can setup enviromet for monit container which will send you metrics about host instance.
 
 ## DEPLOYMENT
@@ -59,9 +59,9 @@ If you have a smtp-server you can setup enviromet for monit container which will
         - MONIT_PASS - Password of user for access to web interface of monit
 2. Execute `docker-compose up --build`
 
-##REST API
+## REST API
 
-###Manage users
+### Manage users
 
 For getting users you do not have to get JWT by valid User.
 0. List of all users in system: `GET: /api/v1/users/`
@@ -96,7 +96,7 @@ For creating new user you do not have to get JWT by valid User. The application 
 For getting users you have to get JWT by valid User with ADMIN role.  
 3. Delete user in system: `DELETE: /api/v1/users/{id}`
 
-###Access
+### Access
 The system work via JWT token authorization. Token expired time is 20 minutes.
 1. Get new token: `GET:/auth`
     - BODY JSON:
@@ -109,7 +109,7 @@ The system work via JWT token authorization. Token expired time is 20 minutes.
     --header 'content-type: application/json' \
     --data '{"login":"user","password":"user"}'`
 
-###Manage shorting URLs
+### Manage shorting URLs
 For creating new link you do not have to get JWT by valid User.
 1. Get new shorted URL: `POST: /api/v1/links`
     - Request body JSON:
@@ -131,7 +131,7 @@ For creating new link you do not have to get JWT by valid User.
      "longUrl":"https://www.google.com/search?hl=en&sugexp=les;&gs_nf=1&gs_mss=how%20do%20I%20iron%20a%20s&tok=POkeFnEdGVTAw_InGMW-Og&cp=21&gs_id=2j&xhr=t&q=how%20do%20I%20iron%20a%20shirt&pf=p&sclient=psy-ab&oq=how+do+I+iron+a+shirt&gs_l=&pbx=1&bav=on.2,or.r_gc.r_pw.r_cp.r_qf.&biw=1600&bih=775&cad=h"
      }'`
      
-###Get links from system
+### Get links from system
 For getting statistics you have to get JWT by valid User with ADMIN role.
  1. Get list of links by user shorted URL: `GET: /api/v1/links`
     - Response body JSON:
@@ -157,13 +157,13 @@ For getting statistics you have to get JWT by valid User with ADMIN role.
 	}]`
     - Ex: ``
 
-###Delete link from system
+### Delete link from system
 For getting statistics you have to get JWT by valid User with ADMIN role.
  1. Delete list of links by user shorted URL: `DELETE: /api/v1/links/{shortUrl}`
     - Ex: ``
     
 
-###Get statistics
+### Get statistics
 1. Get statistics by particular short URL for period. Dates using in (ISO 8601:2004 - YYYY-MM-DDThh:mm:ss): `GET: /api/v1/statistics/{shortUrl}/{startDate}/{endDate}` 
     - Response body JSON:
         - `[{
@@ -254,7 +254,7 @@ For getting statistics you have to get JWT by valid User with ADMIN role.
     --header 'content-type: application/json'`
 
 
-###Additional description
+### Additional description
 
 1. The application provide work with Russian Federation DNS-name (.рф)
 2. You can change your DNS-name via env variable DOMAIN into `docker-compose.yml`
