@@ -11,7 +11,6 @@ import org.mockito.Mock;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
@@ -50,47 +49,6 @@ public class UserControllerTest {
     public void setUp() {
         initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(new UserController(userRepository)).setHandlerExceptionResolvers(TestUtils.createExceptionResolver()).build();
-    }
-
-
-    /**
-     * Test find user.
-     *
-     * @throws Exception the exceptions
-     */
-    @Test
-    public void testFindUser() throws Exception {
-        String id = "0001";
-        User testUser =  User.builder().id(id).login("admin").password("123").salt("salt").author("admin").build();
-
-        testUser.setId(id);
-        when(userRepository.findOne(id)).thenReturn(testUser);
-
-        mockMvc.perform(get("/api/v1/users/"+id).accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.*",hasSize(7)));
-
-        verify(userRepository,times(1)).findOne(id);
-    }
-
-    /**
-     * Test find user not found entity exceptions.
-     *
-     * @throws Exception the exceptions
-     */
-    @Test
-    public void testFindUserNotFoundEntityException() throws Exception {
-        User testUser = null;
-        String id = "00001";
-        when(userRepository.findOne(id)).thenReturn(testUser);
-
-        mockMvc.perform(get("/api/v1/users/00001").accept(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.*",hasSize(2)))
-                .andExpect(jsonPath("$.message", is("User with id ["+id+"] has not found")));
-
-
-        verify(userRepository,times(1)).findOne(id);
     }
 
     /**

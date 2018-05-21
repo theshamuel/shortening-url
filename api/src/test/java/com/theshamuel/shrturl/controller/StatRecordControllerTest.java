@@ -8,6 +8,7 @@ import com.theshamuel.shrturl.statistics.service.StatRecordService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -29,6 +30,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Alex Gladkikh
  */
 public class StatRecordControllerTest {
+
+    @Mock
+    private Environment mockEnvironment;
 
     /**
      * The Stat record repository.
@@ -84,6 +88,7 @@ public class StatRecordControllerTest {
         List<StatRecordDto> expectedList = new ArrayList<>();
         expectedList.add(StatRecordDto.builder().shortUrl("abc").totalClicks(10L).build());
         expectedList.add(StatRecordDto.builder().shortUrl("hjk").totalClicks(40L).build());
+        when(mockEnvironment.getProperty("DOMAIN")).thenReturn("localhost");
         when(statRecordService.getStatsByUserByPeriod("anonymous",new Date(1526763600000L),new Date(1526849999000L))).thenReturn(expectedList);
         mockMvc.perform(get("/api/v1/statistics/user/anonymous/2018-05-20T00:00:00/2018-05-20T23:59:59").accept(MediaType.APPLICATION_JSON_UTF8).requestAttr("claims",TestUtils.getAdminClaims()))
                 .andExpect(status().isOk())

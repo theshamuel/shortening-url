@@ -13,7 +13,6 @@ package com.theshamuel.shrturl.controllers;
 
 
 import com.theshamuel.shrturl.exceptions.DuplicateRecordException;
-import com.theshamuel.shrturl.exceptions.NotFoundParamsException;
 import com.theshamuel.shrturl.user.dao.UserRepository;
 import com.theshamuel.shrturl.user.entity.User;
 import com.theshamuel.shrturl.utils.Roles;
@@ -89,23 +88,6 @@ public class UserController {
 
     }
 
-
-    /**
-     * Find user by id.
-     *
-     * @param id the user's id
-     * @return the response entity included user
-     * @throws ServletException the servlet exceptions
-     */
-    @GetMapping (value = "/users/{id}")
-    public ResponseEntity<User> findUserById(@PathVariable(value = "id") String id) throws ServletException {
-        User user = userRepository.findOne(id);
-        if (user == null) {
-            throw new NotFoundParamsException("User with id ["+id+"] has not found");
-        }
-        return new ResponseEntity(user, HttpStatus.OK);
-
-    }
 
     /**
      * Save user.
