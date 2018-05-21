@@ -2,7 +2,6 @@ package com.theshamuel.shrturl.user.dao.impl;
 
 import com.theshamuel.shrturl.commons.base.dao.impl.BaseRepositoryImplTest;
 import com.theshamuel.shrturl.user.entity.User;
-import com.theshamuel.shrturl.user.entity.UserBuilder;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -23,7 +22,7 @@ public class UserRepositoryImplTest extends BaseRepositoryImplTest{
      */
     @Test
     public void testFindByLogin() {
-        User expected = new UserBuilder().login("admin").password("123").salt("salt").author("admin").build();
+        User expected = User.builder().login("admin").password("123").salt("salt").author("admin").build();
         createTestRecords();
         User actual = userRepository.findByLogin("admin");
         expected.setId(actual.getId());
@@ -34,7 +33,7 @@ public class UserRepositoryImplTest extends BaseRepositoryImplTest{
     @Override
     public void createTestRecords() {
         initCollection("users");
-        User expected = new UserBuilder().login("admin").password("123").salt("salt").author("admin").build();
+        User expected = User.builder().login("admin").password("123").salt("salt").author("admin").build();
         template.save(expected);
     }
 

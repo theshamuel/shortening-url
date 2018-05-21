@@ -4,7 +4,6 @@ import com.theshamuel.shrturl.commons.TestUtils;
 import com.theshamuel.shrturl.controllers.StatRecordController;
 import com.theshamuel.shrturl.statistics.dao.StatRecordRepository;
 import com.theshamuel.shrturl.statistics.dto.StatRecordDto;
-import com.theshamuel.shrturl.statistics.dto.StatRecordDtoBuilder;
 import com.theshamuel.shrturl.statistics.service.StatRecordService;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,7 +63,7 @@ public class StatRecordControllerTest {
      */
     @Test
     public void testGetStatisticsByShortUrlByPeriod() throws Exception {
-        StatRecordDto expected = new StatRecordDtoBuilder().shortUrl("abc").totalClicks(10L).build();
+        StatRecordDto expected = StatRecordDto.builder().shortUrl("abc").totalClicks(10L).build();
         when(statRecordRepository.getStatisticsByShortUrlByPeriod("abc",new Date(1526763600000L),new Date(1526849999000L))).thenReturn(expected);
         mockMvc.perform(get("/api/v1/statistics/abc/2018-05-20T00:00:00/2018-05-20T23:59:59").accept(MediaType.APPLICATION_JSON_UTF8).requestAttr("claims",TestUtils.getAdminClaims()))
                 .andExpect(status().isOk())
@@ -83,8 +82,8 @@ public class StatRecordControllerTest {
     @Test
     public void testGetStatisticsByUserByPeriod() throws Exception {
         List<StatRecordDto> expectedList = new ArrayList<>();
-        expectedList.add(new StatRecordDtoBuilder().shortUrl("abc").totalClicks(10L).build());
-        expectedList.add(new StatRecordDtoBuilder().shortUrl("hjk").totalClicks(40L).build());
+        expectedList.add(StatRecordDto.builder().shortUrl("abc").totalClicks(10L).build());
+        expectedList.add(StatRecordDto.builder().shortUrl("hjk").totalClicks(40L).build());
         when(statRecordService.getStatsByUserByPeriod("anonymous",new Date(1526763600000L),new Date(1526849999000L))).thenReturn(expectedList);
         mockMvc.perform(get("/api/v1/statistics/user/anonymous/2018-05-20T00:00:00/2018-05-20T23:59:59").accept(MediaType.APPLICATION_JSON_UTF8).requestAttr("claims",TestUtils.getAdminClaims()))
                 .andExpect(status().isOk())
@@ -102,8 +101,8 @@ public class StatRecordControllerTest {
     @Test
     public void testGetAllStatisticsByPeriod() throws Exception {
         List<StatRecordDto> expectedList = new ArrayList<>();
-        expectedList.add(new StatRecordDtoBuilder().shortUrl("abc").totalClicks(10L).build());
-        expectedList.add(new StatRecordDtoBuilder().shortUrl("efg").totalClicks(20L).build());
+        expectedList.add(StatRecordDto.builder().shortUrl("abc").totalClicks(10L).build());
+        expectedList.add(StatRecordDto.builder().shortUrl("efg").totalClicks(20L).build());
         when(statRecordRepository.getAllStatisticsByPeriod(new Date(1526763600000L),new Date(1526849999000L))).thenReturn(expectedList);
         mockMvc.perform(get("/api/v1/statistics/2018-05-20T00:00:00/2018-05-20T23:59:59").accept(MediaType.APPLICATION_JSON_UTF8).requestAttr("claims", TestUtils.getAdminClaims()))
                 .andExpect(status().isOk())

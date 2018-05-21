@@ -2,9 +2,7 @@ package com.theshamuel.shrturl.statistics.dao.impl;
 
 import com.theshamuel.shrturl.commons.base.dao.impl.BaseRepositoryImplTest;
 import com.theshamuel.shrturl.statistics.dto.StatRecordDto;
-import com.theshamuel.shrturl.statistics.dto.StatRecordDtoBuilder;
 import com.theshamuel.shrturl.statistics.entity.StatRecord;
-import com.theshamuel.shrturl.statistics.entity.StatRecordBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -63,7 +61,7 @@ public class StatRecordRepositoryImplTest extends BaseRepositoryImplTest {
     public void getAllStatisticsByPeriod(){
         List<StatRecordDto> actual = statRecordRepository.getAllStatisticsByPeriod(new Date(1526763600000L),new Date(1526763600010L));
         assertThat(actual.size(),is(3));
-        assertThat(actual.stream().map(i->i.getShortUrl()).collect(Collectors.toList()),hasItems(new StatRecordDtoBuilder().shortUrl("abc").build().getShortUrl(),new StatRecordDtoBuilder().shortUrl("nop").build().getShortUrl()));
+        assertThat(actual.stream().map(i->i.getShortUrl()).collect(Collectors.toList()),hasItems(StatRecordDto.builder().shortUrl("abc").build().getShortUrl(),StatRecordDto.builder().shortUrl("nop").build().getShortUrl()));
 
         actual = statRecordRepository.getAllStatisticsByPeriod(new Date(1526763600000L),new Date(1526763600010L));
         assertThat(actual.size(),is(3));
@@ -119,11 +117,11 @@ public class StatRecordRepositoryImplTest extends BaseRepositoryImplTest {
     public void createTestRecords() {
         initCollection("statistics");
         template.findAllAndRemove(Query.query(Criteria.where("id").exists(true)),StatRecord.class);
-        statRecord1Anonymous = new StatRecordBuilder().id("0").shortUrl("abc").createdDate(new Date(1526763600000L)).browser("Chrome").operationSystem("Ubuntu").country("Ireland").build();
-        statRecord2Anonymous = new StatRecordBuilder().id("1").shortUrl("abc").createdDate(new Date(1526763600001L)).browser("Chrome").operationSystem("Windows 10").country("Russia").build();
-        statRecord3Anonymous = new StatRecordBuilder().id("2").shortUrl("nop").createdDate(new Date(1526763600002L)).browser("Safari 11").operationSystem("Mac OS").country("Russia").build();
-        statRecord1Admin = new StatRecordBuilder().id("3").shortUrl("abc").createdDate(new Date(1526763600003L)).browser("Safari 11").operationSystem("Mac OS").country("Russia").build();
-        statRecord2Admin = new StatRecordBuilder().id("4").shortUrl("qwe").createdDate(new Date(1526763600004L)).browser("Safari 11").operationSystem("Mac OS").country("Ireland").build();
+        statRecord1Anonymous = StatRecord.builder().id("0").shortUrl("abc").createdDate(new Date(1526763600000L)).browser("Chrome").operationSystem("Ubuntu").country("Ireland").build();
+        statRecord2Anonymous = StatRecord.builder().id("1").shortUrl("abc").createdDate(new Date(1526763600001L)).browser("Chrome").operationSystem("Windows 10").country("Russia").build();
+        statRecord3Anonymous = StatRecord.builder().id("2").shortUrl("nop").createdDate(new Date(1526763600002L)).browser("Safari 11").operationSystem("Mac OS").country("Russia").build();
+        statRecord1Admin = StatRecord.builder().id("3").shortUrl("abc").createdDate(new Date(1526763600003L)).browser("Safari 11").operationSystem("Mac OS").country("Russia").build();
+        statRecord2Admin = StatRecord.builder().id("4").shortUrl("qwe").createdDate(new Date(1526763600004L)).browser("Safari 11").operationSystem("Mac OS").country("Ireland").build();
         template.save(statRecord1Anonymous);
         template.save(statRecord2Anonymous);
         template.save(statRecord3Anonymous);

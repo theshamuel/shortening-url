@@ -1,11 +1,15 @@
 package com.theshamuel.shrturl.links.service.impl;
 
 import com.theshamuel.shrturl.links.dao.ShortLinkRepository;
+import com.theshamuel.shrturl.links.entity.ShortLink;
 import com.theshamuel.shrturl.links.service.ShortLinkService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 /**
@@ -32,11 +36,20 @@ public class ShortLinkServiceImplTest {
      * Test is short link service unique.
      */
     @Test
-    public void testIsShortLinkServiceUnique(){}
+    public void testIsShortLinkServiceUnique(){
+        when(shortLinkRepository.findByShortUrl("abc")).thenReturn(null);
 
-    /**
-     * Test find by short url.
-     */
-    @Test
-    public void testFindByShortUrl(){}
+        boolean actual = shortLinkService.isShortLinkServiceUnique("abc");
+        assertThat(actual,is(true));
+
+        verify(shortLinkRepository,times(1)).findByShortUrl("abc");
+
+
+        when(shortLinkRepository.findByShortUrl("abc1")).thenReturn(ShortLink.builder().build());
+
+        actual = shortLinkService.isShortLinkServiceUnique("abc1");
+        assertThat(actual,is(false));
+
+        verify(shortLinkRepository,times(1)).findByShortUrl("abc1");
+    }
 }

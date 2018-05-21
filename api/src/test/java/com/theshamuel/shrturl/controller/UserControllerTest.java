@@ -4,7 +4,6 @@ import com.theshamuel.shrturl.commons.TestUtils;
 import com.theshamuel.shrturl.controllers.UserController;
 import com.theshamuel.shrturl.user.dao.UserRepository;
 import com.theshamuel.shrturl.user.entity.User;
-import com.theshamuel.shrturl.user.entity.UserBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -62,7 +61,7 @@ public class UserControllerTest {
     @Test
     public void testFindUser() throws Exception {
         String id = "0001";
-        User testUser =  new UserBuilder().id(id).login("admin").password("123").salt("salt").author("admin").build();
+        User testUser =  User.builder().id(id).login("admin").password("123").salt("salt").author("admin").build();
 
         testUser.setId(id);
         when(userRepository.findOne(id)).thenReturn(testUser);
@@ -101,9 +100,9 @@ public class UserControllerTest {
      */
     @Test
     public void testSaveUser() throws Exception {
-        final User testUser = new UserBuilder().login("admin").password("123").salt("salt").author("admin").build();
+        final User testUser = User.builder().login("admin").password("123").salt("salt").author("admin").build();
 
-        User resultUser = new UserBuilder().id("111").login("admin").password("123").salt("salt").author("admin").build();
+        User resultUser = User.builder().id("111").login("admin").password("123").salt("salt").author("admin").build();
 
         when(userRepository.save(testUser)).thenReturn(resultUser);
 
@@ -121,7 +120,7 @@ public class UserControllerTest {
      */
     @Test
     public void testSaveUserDuplicateEntityException() throws Exception {
-        User testUser = new UserBuilder().id("111").login("admin").password("123").salt("salt").author("admin").build();
+        User testUser = User.builder().id("111").login("admin").password("123").salt("salt").author("admin").build();
 
         String login = "admin";
         when(userRepository.findByLogin(login)).thenReturn(testUser);
@@ -141,7 +140,7 @@ public class UserControllerTest {
      */
     @Test
     public void testDeleteUser() throws Exception {
-        final User testUser = new UserBuilder().id("111").login("admin").password("123").salt("salt").author("admin").build();
+        final User testUser = User.builder().id("111").login("admin").password("123").salt("salt").author("admin").build();
 
         when(userRepository.findOne(testUser.getId())).thenReturn(testUser);
 
@@ -182,8 +181,8 @@ public class UserControllerTest {
     @Test
     public void testGetUsersOrderByLoginASC() throws Exception {
         List<User> expectedList = new ArrayList<>();
-        expectedList.add(new UserBuilder().login("admin").password("123").salt("salt").author("admin").build());
-        expectedList.add(new UserBuilder().login("evgit").password("123").salt("salt").author("admin").build());
+        expectedList.add(User.builder().login("admin").password("123").salt("salt").author("admin").build());
+        expectedList.add(User.builder().login("evgit").password("123").salt("salt").author("admin").build());
         when(userRepository.findAll(new Sort(new Sort.Order(Sort.Direction.ASC,"login")))).thenReturn(expectedList);
 
         mockMvc.perform(get("/api/v1/users/").accept(MediaType.APPLICATION_JSON_UTF8).requestAttr("claims",TestUtils.getAdminClaims()))
@@ -226,8 +225,8 @@ public class UserControllerTest {
     @Test
     public void testGetUsersOrderByLoginDESC() throws Exception {
         List<User> expectedList = new ArrayList<>();
-        expectedList.add(new UserBuilder().login("evgit").password("123").salt("salt").author("admin").build());
-        expectedList.add(new UserBuilder().login("admin").password("123").salt("salt").author("admin").build());
+        expectedList.add(User.builder().login("evgit").password("123").salt("salt").author("admin").build());
+        expectedList.add(User.builder().login("admin").password("123").salt("salt").author("admin").build());
         when(userRepository.findAll(new Sort(new Sort.Order(Sort.Direction.DESC,"login")))).thenReturn(expectedList);
 
         mockMvc.perform(get("/api/v1/users/").accept(MediaType.APPLICATION_JSON_UTF8).param("sort","DESC").requestAttr("claims",TestUtils.getAdminClaims()))

@@ -4,7 +4,6 @@ import com.theshamuel.shrturl.commons.TestUtils;
 import com.theshamuel.shrturl.controllers.ShortLinkController;
 import com.theshamuel.shrturl.links.dao.ShortLinkRepository;
 import com.theshamuel.shrturl.links.dto.ShortLinkDto;
-import com.theshamuel.shrturl.links.dto.ShortLinkDtoBuilder;
 import com.theshamuel.shrturl.links.service.ShortLinkService;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,9 +61,9 @@ public class ShortLinkControllerTest {
      */
     @Test
     public void testCreateNewShortUrl() throws Exception {
-        final ShortLinkDto testShortLink = new ShortLinkDtoBuilder().longUrl("http://google.com").build();
+        final ShortLinkDto testShortLink = ShortLinkDto.builder().longUrl("http://google.com").build();
 
-        ShortLinkDto resultShortLink = new ShortLinkDtoBuilder().longUrl("http://google.com").build();
+        ShortLinkDto resultShortLink = ShortLinkDto.builder().longUrl("http://google.com").build();
 
         when(shortLinkService.save(testShortLink)).thenReturn(resultShortLink);
         mockMvc.perform(post("/api/v1/links/").contentType(MediaType.APPLICATION_JSON_UTF8).content(TestUtils.convertObjectToJson(testShortLink)))
@@ -82,7 +81,7 @@ public class ShortLinkControllerTest {
     @Test
     public void testGetAllShortUrl() throws Exception {
         List<ShortLinkDto> expectedList = new ArrayList<>();
-        expectedList.add(new ShortLinkDtoBuilder().shortUrl("abc").totalClicks(10L).build());
+        expectedList.add(ShortLinkDto.builder().shortUrl("abc").totalClicks(10L).build());
         when(shortLinkService.findAll()).thenReturn(expectedList);
 
         mockMvc.perform(get("/api/v1/links/").contentType(MediaType.APPLICATION_JSON_UTF8).requestAttr("claims",TestUtils.getAdminClaims()))
@@ -99,8 +98,8 @@ public class ShortLinkControllerTest {
     @Test
     public void testGetShortUrlByUser() throws Exception {
         List<ShortLinkDto> expectedList = new ArrayList<>();
-        expectedList.add(new ShortLinkDtoBuilder().shortUrl("abc").userLogin("anonymous").totalClicks(10L).build());
-        expectedList.add(new ShortLinkDtoBuilder().shortUrl("efg").userLogin("anonymous").totalClicks(20L).build());
+        expectedList.add(ShortLinkDto.builder().shortUrl("abc").userLogin("anonymous").totalClicks(10L).build());
+        expectedList.add(ShortLinkDto.builder().shortUrl("efg").userLogin("anonymous").totalClicks(20L).build());
 
         when(shortLinkRepository.findShortUrlsByUser("anonymous",null)).thenReturn(expectedList);
 

@@ -4,7 +4,6 @@ import com.theshamuel.shrturl.commons.TestUtils;
 import com.theshamuel.shrturl.controllers.AuthController;
 import com.theshamuel.shrturl.user.dao.UserRepository;
 import com.theshamuel.shrturl.user.entity.User;
-import com.theshamuel.shrturl.user.entity.UserBuilder;
 import com.theshamuel.shrturl.utils.Utils;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +43,7 @@ public class AuthControllerTest {
     @Test
     public void testAuth() throws Exception {
         String login = "admin";
-        User testUser =  new UserBuilder().id("0001").login(login).password(Utils.pwd2sha256("123","salt")).salt("salt").author("admin").build();
+        User testUser =  User.builder().id("0001").login(login).password(Utils.pwd2sha256("123","salt")).salt("salt").author("admin").build();
         AuthController.LoginForm loginForm = new AuthController.LoginForm();
         loginForm.login = login;
         loginForm.password = "123";
@@ -82,7 +81,7 @@ public class AuthControllerTest {
     @Test
     public void testAuthWrongPassword() throws Exception{
         String login = "admin";
-        User testUser =  new UserBuilder().id("0001").login(login).password("no").salt("salt").author("admin").build();
+        User testUser =  User.builder().id("0001").login(login).password("no").salt("salt").author("admin").build();
         AuthController.LoginForm loginForm = new AuthController.LoginForm();
         loginForm.login = login;
         loginForm.password = "123";
