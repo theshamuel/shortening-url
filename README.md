@@ -3,9 +3,9 @@
 ### DESCRIPTION
 This is project which provide API for create short URL (similar goo.gl, bit.ly or t.co).
 
-Back-end: Spring (Spring Boot, Spring IoC, Spring Data, Spring Test), JWT library, Java8
-DB: MongoDB 3.4
-Tools: git,maven,docker.
+1. Back-end: Spring (Spring Boot, Spring IoC, Spring Data, Spring Test), JWT library, Java8
+2. DB: MongoDB 3.4
+3. Tools: git,maven,docker.
 
 JDK version 1.8.0_45 is recommended for building jar archive. Build jar to `target` directory, after that if you are ready to release the built jar move it to `release` directiory.
 
