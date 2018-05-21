@@ -271,6 +271,10 @@ For getting statistics you have to get JWT by valid User with ADMIN role.
      --header 'authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImNkYXRlIjp7InllYXIiOjIwMTgsIm1vbnRoIjoiTUFZIiwiZGF5T2ZNb250aCI6MjAsImRheU9mV2VlayI6IlNVTkRBWSIsImRheU9mWWVhciI6MTQwLCJtb250aFZhbHVlIjo1LCJob3VyIjoyLCJtaW51dGUiOjU5LCJzZWNvbmQiOjU5LCJuYW5vIjowLCJjaHJvbm9sb2d5Ijp7ImlkIjoiSVNPIiwiY2FsZW5kYXJUeXBlIjoiaXNvODYwMSJ9fSwiaWF0IjoxNTI2NzEzMzQzLCJleHAiOjE1Mjc5MTMzNDN9.1aArsrGD4oFlK37Veeyj-g_WGYCXHs72hAPvA4jrfPY' \
     --header 'content-type: application/json'`
 
+### First start
+Develop mode can be start as:
+    - Set DOMAIN `docker-compose.yml` (for local testing you can set `http://localhost`)
+    - Run `docker-compose up --build`
 
 ### Additional description
 
