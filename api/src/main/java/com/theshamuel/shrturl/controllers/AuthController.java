@@ -11,7 +11,7 @@
  */
 package com.theshamuel.shrturl.controllers;
 
-import com.theshamuel.shrturl.exceptions.NotFoundEntityException;
+import com.theshamuel.shrturl.exceptions.NotFoundParamsException;
 import com.theshamuel.shrturl.user.dao.UserRepository;
 import com.theshamuel.shrturl.user.entity.User;
 import com.theshamuel.shrturl.utils.Utils;
@@ -51,11 +51,11 @@ public class AuthController {
      *
      * @param loginForm the login form
      * @return the response entity
-     * @throws NotFoundEntityException
+     * @throws NotFoundParamsException
      */
     @PostMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity auth(@RequestBody final LoginForm loginForm)
-            throws NotFoundEntityException {
+            throws NotFoundParamsException {
 
         User user = userRepository.findByLogin(loginForm.login);
 
@@ -68,11 +68,11 @@ public class AuthController {
                             .signWith(SignatureAlgorithm.HS256, "SuperKey182").setExpiration(new Date(System.currentTimeMillis() + 12000000)).compact(),user.getLogin());
                     return new ResponseEntity(result, HttpStatus.OK);
                 } else {
-                    throw new NotFoundEntityException("Wrong password");
+                    throw new NotFoundParamsException("Wrong password");
                 }
 
         }else
-            throw new NotFoundEntityException("There is no user with this login");
+            throw new NotFoundParamsException("There is no user with this login");
 
     }
 

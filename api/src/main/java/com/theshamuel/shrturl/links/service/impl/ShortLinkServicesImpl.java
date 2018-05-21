@@ -12,6 +12,7 @@
 package com.theshamuel.shrturl.links.service.impl;
 
 import com.theshamuel.shrturl.baseclasses.service.BaseServiceImpl;
+import com.theshamuel.shrturl.exceptions.NotFoundParamsException;
 import com.theshamuel.shrturl.links.dao.ShortLinkRepository;
 import com.theshamuel.shrturl.links.dto.ShortLinkDto;
 import com.theshamuel.shrturl.links.entity.ShortLink;
@@ -64,9 +65,9 @@ public class ShortLinkServicesImpl extends BaseServiceImpl<ShortLinkDto,ShortLin
 
     @Override
     public ShortLinkDto obj2dto(ShortLink obj) {
-        StringBuilder domainName = new StringBuilder("http://localhost:82");
-        if (1==1 || environment.getProperty("DOMAIN")!=null && environment.getProperty("DOMAIN").toString().trim().length()>0) {
-            //domainName.append(environment.getProperty("DOMAIN"));
+        StringBuilder domainName = new StringBuilder();
+        if (environment.getProperty("DOMAIN")!=null && environment.getProperty("DOMAIN").toString().trim().length()>0) {
+            domainName.append(environment.getProperty("DOMAIN"));
             domainName.append("/");
             domainName.append(obj.getShortUrl());
             ShortLinkDto linkDto = new ShortLinkDto();
@@ -79,7 +80,7 @@ public class ShortLinkServicesImpl extends BaseServiceImpl<ShortLinkDto,ShortLin
             linkDto.setTotalClicks(obj.getTotalClicks());
             return linkDto;
         }else {
-            throw new RuntimeException("Not found DOMAIN intro Environment");
+            throw new NotFoundParamsException("Not found variable $DOMAIN intro Environment");
         }
     }
 
@@ -87,7 +88,8 @@ public class ShortLinkServicesImpl extends BaseServiceImpl<ShortLinkDto,ShortLin
     public ShortLink dto2obj(ShortLinkDto dto) {
         if (dto.getShortUrl()!=null)
             dto.setShortUrl(dto.getShortUrl().substring(dto.getShortUrl().lastIndexOf("/")+1,dto.getShortUrl().length()));
-        return dto;
+        return ShortLink.builder().id(dto.getId()).createdDate(dto.getCreatedDate()).modifyDate(dto.getModifyDate()).author(dto.getAuthor())
+                .shortUrl(dto.getShortUrl()).longUrl(dto.getLongUrl()).userLogin(dto.getUserLogin()).totalClicks(dto.getTotalClicks()).build();
     }
 
     @Override

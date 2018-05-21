@@ -13,7 +13,6 @@ package com.theshamuel.shrturl.controllers;
 
 import com.theshamuel.shrturl.links.dao.ShortLinkRepository;
 import com.theshamuel.shrturl.links.dto.ShortLinkDto;
-import com.theshamuel.shrturl.links.dto.ShortLinkDtoBuilder;
 import com.theshamuel.shrturl.links.entity.ShortLink;
 import com.theshamuel.shrturl.links.service.ShortLinkService;
 import com.theshamuel.shrturl.utils.Utils;
@@ -88,7 +87,7 @@ public class ShortLinkController {
                 else
                     url = linkDto.getLongUrl();
 
-                ShortLinkDto link = new ShortLinkDtoBuilder().longUrl(url).totalClicks(0L).createdDate(new Date()).userLogin(claims!=null?claims.getSubject():"anonymous").build();
+                ShortLinkDto link = ShortLinkDto.builder().longUrl(url).totalClicks(0L).createdDate(new Date()).userLogin(claims!=null?claims.getSubject():"anonymous").build();
 
                 return new ResponseEntity(shortLinkServices.save(link), HttpStatus.CREATED);
             }

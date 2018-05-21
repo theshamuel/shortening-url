@@ -14,7 +14,6 @@ package com.theshamuel.shrturl.statistics.dao.impl;
 import com.mongodb.BasicDBObject;
 import com.theshamuel.shrturl.statistics.dao.StatRecordOperations;
 import com.theshamuel.shrturl.statistics.dto.StatRecordDto;
-import com.theshamuel.shrturl.statistics.dto.StatRecordDtoBuilder;
 import com.theshamuel.shrturl.statistics.entity.StatRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -241,7 +240,7 @@ public class StatRecordRepositoryImpl implements StatRecordOperations {
         List<StatRecordDto> result = new ArrayList<>();
 
         for (Map.Entry<String,List> entryCounty : resultByCountry.entrySet()){
-            StatRecordDto tmp = new StatRecordDtoBuilder().shortUrl(entryCounty.getKey()).country(entryCounty.getValue()).build();
+            StatRecordDto tmp = StatRecordDto.builder().shortUrl(entryCounty.getKey()).country(entryCounty.getValue()).build();
             if (resultByBrowser.containsKey(entryCounty.getKey())){
                 tmp.setBrowser(resultByBrowser.get(entryCounty.getKey()));
                 resultByBrowser.remove(entryCounty.getKey());
@@ -255,7 +254,7 @@ public class StatRecordRepositoryImpl implements StatRecordOperations {
         }
 
         for (Map.Entry<String,List> entryBrowser : resultByBrowser.entrySet()){
-            StatRecordDto tmp = new StatRecordDtoBuilder().shortUrl(entryBrowser.getKey()).browser(entryBrowser.getValue()).build();
+            StatRecordDto tmp = StatRecordDto.builder().shortUrl(entryBrowser.getKey()).browser(entryBrowser.getValue()).build();
             if (resultByCountry.containsKey(entryBrowser.getKey())){
                 tmp.setCountry(resultByCountry.get(entryBrowser.getKey()));
                 resultByCountry.remove(entryBrowser.getKey());
@@ -268,7 +267,7 @@ public class StatRecordRepositoryImpl implements StatRecordOperations {
             result.add(tmp);
         }
         for (Map.Entry<String,List> entryOs : resultByOS.entrySet()){
-            StatRecordDto tmp = new StatRecordDtoBuilder().shortUrl(entryOs.getKey()).operationSystem(entryOs.getValue()).build();
+            StatRecordDto tmp = StatRecordDto.builder().shortUrl(entryOs.getKey()).operationSystem(entryOs.getValue()).build();
             if (resultByCountry.containsKey(entryOs.getKey())){
                 tmp.setCountry(resultByCountry.get(entryOs.getKey()));
                 resultByCountry.remove(entryOs.getKey());

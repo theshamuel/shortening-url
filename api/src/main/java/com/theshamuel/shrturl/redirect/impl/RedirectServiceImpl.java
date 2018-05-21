@@ -6,7 +6,6 @@ import com.theshamuel.shrturl.links.service.ShortLinkService;
 import com.theshamuel.shrturl.redirect.RedirectService;
 import com.theshamuel.shrturl.statistics.dao.StatRecordRepository;
 import com.theshamuel.shrturl.statistics.entity.StatRecord;
-import com.theshamuel.shrturl.statistics.entity.StatRecordBuilder;
 import eu.bitwalker.useragentutils.UserAgent;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -99,7 +98,7 @@ public class RedirectServiceImpl implements RedirectService {
             String os = "unknown";
             if (userAgent != null && userAgent.getOperatingSystem() != null && userAgent.getOperatingSystem().getName() != null)
                 os = userAgent.getOperatingSystem().getName();
-            StatRecord statRecord = new StatRecordBuilder().shortUrl(shortLink.getShortUrl())
+            StatRecord statRecord = StatRecord.builder().shortUrl(shortLink.getShortUrl())
                     .createdDate(new Date())
                     .browser(browser)
                     .operationSystem(os)

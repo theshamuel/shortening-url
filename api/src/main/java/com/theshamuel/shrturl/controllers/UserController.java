@@ -13,14 +13,12 @@ package com.theshamuel.shrturl.controllers;
 
 
 import com.theshamuel.shrturl.exceptions.DuplicateRecordException;
-import com.theshamuel.shrturl.exceptions.NotFoundEntityException;
+import com.theshamuel.shrturl.exceptions.NotFoundParamsException;
 import com.theshamuel.shrturl.user.dao.UserRepository;
 import com.theshamuel.shrturl.user.entity.User;
 import com.theshamuel.shrturl.utils.Roles;
 import com.theshamuel.shrturl.utils.Utils;
 import io.jsonwebtoken.Claims;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -41,8 +39,6 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/v1", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class UserController {
-
-    private static Logger logger =  LoggerFactory.getLogger(UserController.class);
 
     private UserRepository userRepository;
 
@@ -105,7 +101,7 @@ public class UserController {
     public ResponseEntity<User> findUserById(@PathVariable(value = "id") String id) throws ServletException {
         User user = userRepository.findOne(id);
         if (user == null) {
-            throw new NotFoundEntityException("User with id ["+id+"] has not found");
+            throw new NotFoundParamsException("User with id ["+id+"] has not found");
         }
         return new ResponseEntity(user, HttpStatus.OK);
 
