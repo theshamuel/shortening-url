@@ -109,8 +109,8 @@ services:
         volumes:
             - ./web/src/:/usr/share/nginx/pages
         ports:
-            - "8081:80"
-            - "8443:443"
+            - "80:80"
+            - "443:443"
         environment:
             - TZ=Europe/Moscow
             - PROXY_SERVER=shrturl-api
