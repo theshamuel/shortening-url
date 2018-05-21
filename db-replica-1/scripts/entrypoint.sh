@@ -13,23 +13,14 @@ if [ "${MONGO_AUTH}" == true ]; then
 (mongod --auth --replSet 'shrturl-rs' --keyFile '/shrturl-rs.key' ) &(
 sleep 3;
 echo "=> Creating ADMIN pwd"
-
-mongo --eval "rs.initiate();"
 sleep 3;
 mongo admin --eval "db.createUser({ user: '$MONGO_ADMIN', pwd: '$MONGO_ADMIN_PASSWORD', roles: [ { role: 'root', db: 'admin' } ] });"
-
-mongo admin -u ${MONGO_ADMIN} -p ${MONGO_ADMIN_PASSWORD} <<EOF
-rs.add('shrturl-db-replica-1:27017');
-EOF
-
-/restore.sh 
 /create_user.sh
 echo "=> ADMIN pwd has created"
 )
 else
   (mongod --replSet 'shrturl-rs') &(
   sleep 5;
-  mongo --eval "rs.initiate(); rs.add('shrturl-db:27017'); rs.add('shrturl-db-replica-1:27017');"
   echo "=> Mongo start in test mode without credentials"
   /restore.sh
   )

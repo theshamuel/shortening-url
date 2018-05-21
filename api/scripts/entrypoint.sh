@@ -9,4 +9,4 @@ done
 cp /usr/share/zoneinfo/$TZ /etc/localtime && \
 echo $TZ > /etc/timezone
 
-java -jar /opt/shrturl/shrturl-${VERSION}.jar
+java -Xmx1024m -jar -XX:+UseG1GC -jar /opt/shrturl/shrturl-${VERSION}.jar
