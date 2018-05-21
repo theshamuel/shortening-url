@@ -18,6 +18,8 @@ There are deploy two containers of mongo `shrturl-db` - main, and `shrturl-db-re
 #### API
 The directory `api/release` has the first version of jar api (the version which will start into docker container is setting up as environment variable (VERSION) in shrturl-api service in docker-compose.yml)
 Logs collects to volume which mapped into docker container
+This docker container based on my own docker image:
+https://hub.docker.com/r/theshamuel/oracle-java8/
 
 #### Monit
 If you have a smtp-server you can setup enviromet for monit container which will send you metrics about host instance.
