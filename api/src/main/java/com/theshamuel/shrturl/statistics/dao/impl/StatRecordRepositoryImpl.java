@@ -28,8 +28,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -53,54 +51,6 @@ public class StatRecordRepositoryImpl implements StatRecordOperations {
         return mongo.count(query, StatRecord.class);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List getAllStatisticsByPeriod(Date startDate, Date endDate) {
-
-        Map<String,List> resultByCountry = new ConcurrentHashMap<>(getStatisticsCountryByPeriod(startDate,endDate).stream().collect(Collectors.toMap(StatRecordDto::getShortUrl, StatRecordDto::getCountry)));
-
-        Map<String,List> resultByBrowser = new ConcurrentHashMap<>(getStatisticsBrowserByPeriod(startDate,endDate).stream().collect(Collectors.toMap(StatRecordDto::getShortUrl, StatRecordDto::getBrowser)));
-
-        Map<String,List> resultByOS = new ConcurrentHashMap<>(getStatisticsOsByPeriod(startDate,endDate).stream().collect(Collectors.toMap(StatRecordDto::getShortUrl, StatRecordDto::getOperationSystem)));
-
-
-        return collectResult(resultByCountry,resultByBrowser,resultByOS);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List getStatisticsByUserByPeriod(List<String> userUrls, Date startDate, Date endDate) {
-
-        Map<String,List> resultByCountry = new ConcurrentHashMap<>(getStatisticsCountryByUserByPeriod(userUrls,startDate,endDate).stream().collect(Collectors.toMap(StatRecordDto::getShortUrl, StatRecordDto::getCountry)));
-
-        Map<String,List> resultByBrowser = new ConcurrentHashMap<>(getStatisticsBrowserByUserByPeriod(userUrls,startDate,endDate).stream().collect(Collectors.toMap(StatRecordDto::getShortUrl, StatRecordDto::getBrowser)));
-
-        Map<String,List> resultByOS = new ConcurrentHashMap<>(getStatisticsOsByUserByPeriod(userUrls, startDate,endDate).stream().collect(Collectors.toMap(StatRecordDto::getShortUrl, StatRecordDto::getOperationSystem)));
-
-
-        return collectResult(resultByCountry,resultByBrowser,resultByOS); }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public StatRecordDto getStatisticsByShortUrlByPeriod(String shortUrl, Date startDate, Date endDate) {
-
-        Map<String,List> resultByCountry = new ConcurrentHashMap<>(getStatisticsCountryByShortUrlByPeriod(shortUrl,startDate,endDate).stream().collect(Collectors.toMap(StatRecordDto::getShortUrl, StatRecordDto::getCountry)));
-
-        Map<String,List> resultByBrowser = new ConcurrentHashMap<>(getStatisticsBrowserByShortUrlByPeriod(shortUrl,startDate,endDate).stream().collect(Collectors.toMap(StatRecordDto::getShortUrl, StatRecordDto::getBrowser)));
-
-        Map<String,List> resultByOS = new ConcurrentHashMap<>(getStatisticsOsByShortUrlByPeriod(shortUrl, startDate,endDate).stream().collect(Collectors.toMap(StatRecordDto::getShortUrl, StatRecordDto::getOperationSystem)));
-
-
-        List<StatRecordDto> tmpRes = collectResult(resultByCountry,resultByBrowser,resultByOS);
-        return tmpRes.size()>0?tmpRes.get(0):null;
-
-    }
 
     /**
      * {@inheritDoc}

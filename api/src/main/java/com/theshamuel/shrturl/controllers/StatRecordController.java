@@ -74,7 +74,7 @@ public class StatRecordController {
             @PathVariable String shortUrl,
             @PathVariable String startDate,
             @PathVariable String endDate) throws ServletException {
-        StatRecordDto res = statRecordRepository.getStatisticsByShortUrlByPeriod(shortUrl, Date.from(LocalDateTime.parse(startDate).atZone(ZoneId.systemDefault()).toInstant()),Date.from(LocalDateTime.parse(endDate).atZone(ZoneId.systemDefault()).toInstant()));
+        StatRecordDto res = statRecordService.getStatisticsByShortUrlByPeriod(shortUrl, Date.from(LocalDateTime.parse(startDate).atZone(ZoneId.systemDefault()).toInstant()),Date.from(LocalDateTime.parse(endDate).atZone(ZoneId.systemDefault()).toInstant()));
 
         return new ResponseEntity<>(res,HttpStatus.OK);
     }
@@ -92,7 +92,7 @@ public class StatRecordController {
             @PathVariable String startDate,
             @PathVariable String endDate) throws ServletException {
 
-        List res = statRecordRepository.getAllStatisticsByPeriod(Date.from(LocalDateTime.parse(startDate).atZone(ZoneId.systemDefault()).toInstant()),Date.from(LocalDateTime.parse(endDate).atZone(ZoneId.systemDefault()).toInstant()));
+        List res = statRecordService.getAllStatisticsByPeriod(Date.from(LocalDateTime.parse(startDate).atZone(ZoneId.systemDefault()).toInstant()),Date.from(LocalDateTime.parse(endDate).atZone(ZoneId.systemDefault()).toInstant()));
 
         return new ResponseEntity<>(res,HttpStatus.OK);
     }
