@@ -8,7 +8,7 @@ ADD scripts/create_user.sh /create_user.sh
 ADD scripts/backup_script.sh /backup_script.sh
 ADD scripts/shrturl-rs.key /shrturl-rs.key
 
-EXPOSE 27017
+EXPOSE 37017
 
 RUN \
  chmod +x /entrypoint.sh && \
