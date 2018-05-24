@@ -10,7 +10,7 @@ echo "MONGO_ADMIN=${MONGO_ADMIN}, MONGO_ADMIN_PASSWORD=${MONGO_ADMIN_PASSWORD}, 
 echo "MONGO_AUTH=${MONGO_AUTH}"
 
 if [ "${MONGO_AUTH}" == true ]; then
-(mongod --auth --replSet 'shrturl-rs' --keyFile '/shrturl-rs.key' --port ${MONGO_PORT) &(
+(mongod --auth --replSet 'shrturl-rs' --keyFile '/shrturl-rs.key') &(
 sleep 3;
 echo "=> Creating ADMIN pwd"
 sleep 3;
