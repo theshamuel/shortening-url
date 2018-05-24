@@ -76,6 +76,8 @@ public class RedirectServiceImpl implements RedirectService {
     public String getRedirectUrl(String shortUrl, String strUserAgent, String remoteHost) {
         ShortLink shortLink = shortLinkRepository.findByShortUrl(shortUrl);
         String redirectUrl = shortUrl;
+        if (remoteHost==null)
+            remoteHost = new String("0.0.0.0");
         if (shortLink != null) {
             String country = "unknown";
             if (endpointCountryByIp != null && endpointCountryByIp.trim().length() > 0) {
