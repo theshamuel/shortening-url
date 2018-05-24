@@ -32,9 +32,6 @@ services:
             - AWS_ACCESS_KEY_ID=
             - AWS_SECRET_KEY=
             - AWS_PATH=
-        sysctls:
-            - net.ipv4.tcp_keepalive_time=120
-        privileged: true
 
     shrturl-db-replica-1:
         build: db-replica-1
@@ -67,9 +64,6 @@ services:
             - AWS_ACCESS_KEY_ID=
             - AWS_SECRET_KEY=
             - AWS_PATH
-        sysctls:
-            - net.ipv4.tcp_keepalive_time=120
-        privileged: true
 
     shrturl-api:
         build: api
