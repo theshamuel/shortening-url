@@ -60,7 +60,7 @@ public class RedirectController {
      */
     @GetMapping(value = "/{shortUrl}")
     public void redirectToLongUrl(@PathVariable String shortUrl, HttpServletRequest request, HttpServletResponse response) {
-        String remoteHost = request.getHeader("X-Real-IP");
+        String remoteHost = request.getHeader("X-Forwarded-For");
         String redirectUrl = redirectService.getRedirectUrl(shortUrl,request.getHeader("User-Agent"),remoteHost);
         try {
             response.setCharacterEncoding("UTF-8");

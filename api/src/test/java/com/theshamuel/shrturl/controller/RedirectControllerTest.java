@@ -52,11 +52,11 @@ public class RedirectControllerTest {
         String shortUrl = "123";
         String strUserAgent = "ua";
 
-        when(redirectService.getRedirectUrl(shortUrl,strUserAgent,"localhost")).thenReturn("http://google.com");
-        mockMvc.perform(get("/123").header("User-Agent","ua"))
+        when(redirectService.getRedirectUrl(shortUrl,strUserAgent,"88.24.22.89")).thenReturn("http://google.com");
+        mockMvc.perform(get("/123").header("User-Agent","ua").header("X-Forwarded-For","88.24.22.89"))
                 .andExpect(status().isFound());
 
-        verify(redirectService,times(1)).getRedirectUrl(shortUrl,strUserAgent,"localhost");
+        verify(redirectService,times(1)).getRedirectUrl(shortUrl,strUserAgent,"88.24.22.89");
     }
 
 }
