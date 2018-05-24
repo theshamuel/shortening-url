@@ -32,10 +32,9 @@ services:
             - AWS_ACCESS_KEY_ID=
             - AWS_SECRET_KEY=
             - AWS_PATH=
-        network_mode: host
-        # sysctls:
-        #     - net.ipv4.tcp_keepalive_time=120
-        #privileged: true
+        sysctls:
+            - net.ipv4.tcp_keepalive_time=120
+        privileged: true
 
     shrturl-db-replica-1:
         build: db-replica-1
@@ -68,10 +67,9 @@ services:
             - AWS_ACCESS_KEY_ID=
             - AWS_SECRET_KEY=
             - AWS_PATH
-        network_mode: host
-        # sysctls:
-        #     - net.ipv4.tcp_keepalive_time=120
-        # privileged: true
+        sysctls:
+            - net.ipv4.tcp_keepalive_time=120
+        privileged: true
 
     shrturl-api:
         build: api
@@ -85,6 +83,8 @@ services:
                 max-file: "5"
         volumes:
             - ./log/shrturl_logs:/var/log/shrturl
+        ports:
+            - "9000:9000"
         environment:
             - TZ=Europe/Moscow
             - VERSION=0.0.2
@@ -140,4 +140,4 @@ services:
     #       - ALERT_EMAIL=<set_alert_email>
     #       - MONIT_USER=<set_monit_user>
     #       - MONIT_PASS=<set_monit_pwd>
-    #     network_mode: host
+    #     network_mode: bridge
