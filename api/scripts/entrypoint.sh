@@ -1,6 +1,6 @@
 #!/bin/sh
 echo "Start api......."
-until nc -vz shrturl-db 27017
+until nc -vz localhost 27017
 do
     echo "Waiting api database..."
     sleep 5
