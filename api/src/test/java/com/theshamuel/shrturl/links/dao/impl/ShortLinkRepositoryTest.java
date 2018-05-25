@@ -81,12 +81,12 @@ public class ShortLinkRepositoryTest extends BaseRepositoryImplTest {
     @Override
     public void createTestRecords() {
         initCollection("shortlinks");
-        template.findAllAndRemove(Query.query(Criteria.where("id").exists(true)),ShortLink.class);
-        shortLink1Anonymous = ShortLink.builder().id("0").shortUrl("abc").createdDate(new Date(1526763600000L)).longUrl("https://google.com").userLogin("anonymous").totalClicks(10L).build();
-        shortLink2Anonymous = ShortLink.builder().id("1").shortUrl("dfg").createdDate(new Date(1526763600001L)).longUrl("https://yandex.com").userLogin("anonymous").totalClicks(11L).build();
-        shortLink3Anonymous = ShortLink.builder().id("2").shortUrl("huj").createdDate(new Date(1526763600002L)).longUrl("https://reddit.com").userLogin("anonymous").totalClicks(12L).build();
-        shortLink1Admin = ShortLink.builder().id("3").shortUrl("klm").createdDate(new Date(1526763600003L)).longUrl("https://google.com/123").userLogin("admin").totalClicks(20L).build();
-        shortLink2Admin = ShortLink.builder().id("4").shortUrl("nop").createdDate(new Date(1526763600004L)).longUrl("https://yandex.com/4444").userLogin("admin").totalClicks(21L).build();
+        template.findAllAndRemove(Query.query(Criteria.where("shortUrl").exists(true)),ShortLink.class);
+        shortLink1Anonymous = ShortLink.builder().shortUrl("abc").createdDate(new Date(1526763600000L)).longUrl("https://google.com").userLogin("anonymous").totalClicks(10L).build();
+        shortLink2Anonymous = ShortLink.builder().shortUrl("dfg").createdDate(new Date(1526763600001L)).longUrl("https://yandex.com").userLogin("anonymous").totalClicks(11L).build();
+        shortLink3Anonymous = ShortLink.builder().shortUrl("huj").createdDate(new Date(1526763600002L)).longUrl("https://reddit.com").userLogin("anonymous").totalClicks(12L).build();
+        shortLink1Admin = ShortLink.builder().shortUrl("klm").createdDate(new Date(1526763600003L)).longUrl("https://google.com/123").userLogin("admin").totalClicks(20L).build();
+        shortLink2Admin = ShortLink.builder().shortUrl("nop").createdDate(new Date(1526763600004L)).longUrl("https://yandex.com/4444").userLogin("admin").totalClicks(21L).build();
         template.save(shortLink1Anonymous);
         template.save(shortLink2Anonymous);
         template.save(shortLink3Anonymous);

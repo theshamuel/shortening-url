@@ -23,7 +23,7 @@ import java.util.List;
  * @param <E> the type parameter define entity object class
  * @author Alex Gladkikh
  */
-public interface BaseService<T extends BaseEntity, E extends BaseEntity> {
+public interface BaseService<T, E> {
 
 
     /**

@@ -14,6 +14,7 @@ package com.theshamuel.shrturl.links.entity;
 import com.theshamuel.shrturl.baseclasses.entity.BaseEntity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -25,11 +26,13 @@ import java.util.Date;
  * @author Alex Gladkikh
  */
 @Document(collection = "shortlinks")
-public class ShortLink extends BaseEntity {
+public class ShortLink {
+
 
     @Field("userLogin")
     private String userLogin;
 
+    @Id
     @Field("shortUrl")
     private String shortUrl;
 
@@ -38,6 +41,16 @@ public class ShortLink extends BaseEntity {
 
     @Field("totalClicks")
     private Long totalClicks;
+
+    @Field("createdDate")
+    private Date createdDate;
+
+    @Field("modifyDate")
+    private Date modifyDate;
+
+    @Field("author")
+    private String author;
+
 
     /**
      * Instantiates a new ShortLink.
@@ -51,8 +64,6 @@ public class ShortLink extends BaseEntity {
      * @param builder the builder
      */
     public ShortLink(Builder builder) {
-
-        setId(builder.id);
 
         setCreatedDate(builder.createdDate);
 
@@ -140,6 +151,30 @@ public class ShortLink extends BaseEntity {
      */
     public void setTotalClicks(Long totalClicks) {
         this.totalClicks = totalClicks;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getModifyDate() {
+        return modifyDate;
+    }
+
+    public void setModifyDate(Date modifyDate) {
+        this.modifyDate = modifyDate;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     /**
@@ -285,7 +320,6 @@ public class ShortLink extends BaseEntity {
         ShortLink that = (ShortLink) o;
 
         return new EqualsBuilder()
-                .append(getId(), that.getId())
                 .append(shortUrl, that.shortUrl)
                 .append(longUrl, that.longUrl)
                 .append(totalClicks, that.totalClicks)
@@ -295,7 +329,6 @@ public class ShortLink extends BaseEntity {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .append(getId())
                 .append(shortUrl)
                 .append(longUrl)
                 .append(totalClicks)
