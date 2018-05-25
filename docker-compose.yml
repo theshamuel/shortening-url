@@ -102,14 +102,14 @@ services:
                 max-file: "5"
         volumes:
             - ./web/src/:/usr/share/nginx/pages
-        ports:
-            - "80:80"
-            - "443:443"
+        # ports:
+        #     - "80:80"
+        #     - "443:443"
         environment:
             - TZ=Europe/Moscow
             - PROXY_SERVER=localhost
             - PROXY_PORT=9000
-        network_mode: bridge
+        network_mode: host
 
     #   monit:
     #     image: umputun/monit-docker
