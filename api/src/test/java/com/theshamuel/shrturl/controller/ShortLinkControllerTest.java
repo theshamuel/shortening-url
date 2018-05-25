@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -71,6 +72,10 @@ public class ShortLinkControllerTest {
 
         ArgumentCaptor<ShortLinkDto> linkCaptor = ArgumentCaptor.forClass(ShortLinkDto.class);
         verify(shortLinkService,times(1)).save(linkCaptor.capture());
+        assertThat(linkCaptor.getAllValues().size(),is(1));
+        assertThat(linkCaptor.getValue().getLongUrl(),is("http://google.com"));
+        assertThat(linkCaptor.getValue().getTotalClicks(),is(0L));
+        assertThat(linkCaptor.getValue().getUserLogin(),is("anonymous"));
     }
 
     /**

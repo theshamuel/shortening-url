@@ -4,6 +4,7 @@ import com.theshamuel.shrturl.commons.TestUtils;
 import com.theshamuel.shrturl.controllers.UserController;
 import com.theshamuel.shrturl.user.dao.UserRepository;
 import com.theshamuel.shrturl.user.entity.User;
+import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -18,6 +19,8 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -69,6 +72,12 @@ public class UserControllerTest {
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository,times(1)).save(userCaptor.capture());
+        assertThat(testUser.getLogin(),is("admin"));
+        assertThat(testUser.getPassword(),is("123"));
+        assertThat(testUser.getSalt(),is("salt"));
+        assertThat(testUser.getAuthor(),is("admin"));
+        assertThat(testUser.getRole(), is(nullValue()));
+
     }
 
     /**
