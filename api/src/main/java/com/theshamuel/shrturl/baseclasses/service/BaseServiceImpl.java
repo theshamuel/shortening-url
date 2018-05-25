@@ -27,7 +27,7 @@ import java.util.Optional;
  *
  * @author Alex Gladkikh
  */
-public abstract class BaseServiceImpl<T extends BaseEntity, E extends BaseEntity> implements BaseService<T,E> {
+public abstract class BaseServiceImpl<T, E> implements BaseService<T,E> {
 
 
     /**

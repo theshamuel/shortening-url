@@ -136,7 +136,7 @@ public class ShortLinkController {
                 claims.get("roles",String.class).toLowerCase().equals("admin")) {
             ShortLink shortLink = shortLinkRepository.findByShortUrl(shortUrl);
             if (shortLink != null) {
-                shortLinkServices.delete(shortLink.getId());
+                shortLinkServices.delete(shortLink.getShortUrl());
                 return new ResponseEntity(HttpStatus.OK);
             }
             return new ResponseEntity(HttpStatus.NOT_FOUND);

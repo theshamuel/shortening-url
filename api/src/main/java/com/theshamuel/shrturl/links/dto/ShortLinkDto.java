@@ -12,6 +12,7 @@
 package com.theshamuel.shrturl.links.dto;
 
 import com.theshamuel.shrturl.baseclasses.entity.BaseEntity;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 
@@ -20,7 +21,7 @@ import java.util.Date;
  *
  * @author Alex Gladkikh
  */
-public class ShortLinkDto extends BaseEntity {
+public class ShortLinkDto {
 
     private String userLogin;
 
@@ -30,6 +31,11 @@ public class ShortLinkDto extends BaseEntity {
 
     private Long totalClicks;
 
+    private Date createdDate;
+
+    private Date modifyDate;
+
+    private String author;
     /**
      * Instantiates a new ShortLink dto.
      */
@@ -42,8 +48,6 @@ public class ShortLinkDto extends BaseEntity {
      * @param builder the builder
      */
     public ShortLinkDto(Builder builder) {
-
-        setId(builder.id);
 
         setCreatedDate(builder.createdDate);
 
@@ -132,6 +136,30 @@ public class ShortLinkDto extends BaseEntity {
         this.totalClicks = totalClicks;
     }
 
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getModifyDate() {
+        return modifyDate;
+    }
+
+    public void setModifyDate(Date modifyDate) {
+        this.modifyDate = modifyDate;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     /**
      * Builder builder.
      *
@@ -145,8 +173,6 @@ public class ShortLinkDto extends BaseEntity {
      * The ShortLink dto (Data transaction object) builder.
      */
     public static final class Builder {
-
-        private String id;
 
         private Date createdDate;
 
@@ -169,16 +195,6 @@ public class ShortLinkDto extends BaseEntity {
 
         }
 
-        /**
-         * Id short link builder.
-         *
-         * @param id the id
-         * @return the builder
-         */
-        public Builder id(String id) {
-            this.id = id;
-            return this;
-        }
 
         /**
          * Created date short link builder.

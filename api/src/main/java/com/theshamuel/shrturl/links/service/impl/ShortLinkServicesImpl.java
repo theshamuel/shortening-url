@@ -71,7 +71,6 @@ public class ShortLinkServicesImpl extends BaseServiceImpl<ShortLinkDto,ShortLin
             domainName.append("/");
             domainName.append(obj.getShortUrl());
             ShortLinkDto linkDto = new ShortLinkDto();
-            linkDto.setId(obj.getId());
             linkDto.setAuthor(obj.getAuthor());
             linkDto.setCreatedDate(obj.getCreatedDate());
             linkDto.setModifyDate(obj.getModifyDate());
@@ -88,7 +87,7 @@ public class ShortLinkServicesImpl extends BaseServiceImpl<ShortLinkDto,ShortLin
     public ShortLink dto2obj(ShortLinkDto dto) {
         if (dto.getShortUrl()!=null)
             dto.setShortUrl(dto.getShortUrl().substring(dto.getShortUrl().lastIndexOf("/")+1,dto.getShortUrl().length()));
-        return ShortLink.builder().id(dto.getId()).createdDate(dto.getCreatedDate()).modifyDate(dto.getModifyDate()).author(dto.getAuthor())
+        return ShortLink.builder().createdDate(dto.getCreatedDate()).modifyDate(dto.getModifyDate()).author(dto.getAuthor())
                 .shortUrl(dto.getShortUrl()).longUrl(dto.getLongUrl()).userLogin(dto.getUserLogin()).totalClicks(dto.getTotalClicks()).build();
     }
 
